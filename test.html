@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeerTech Interactive Learning Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Calm Harmony (Stone, Sky) -->
+    <!-- Application Structure Plan: A single-page application with a fixed sidebar for navigation and a dynamic main content area. This structure transforms the linear slide presentation into an interactive tool. The support worker can follow the logical flow for new learners or use the sidebar for quick, random-access to specific topics to answer client questions on the spot. This balances guided learning with responsive support. New sections for Microsoft Word, Excel, and Canva have been added under a 'Productivity Apps' category. Each content section now includes a dedicated 'Practice & Q&A' block with collapsible questions and answers to enhance interactivity and self-assessment. -->
+    <!-- Visualization & Content Choices: The source material is purely informational text. Goal: Inform/Teach, and now also Practice/Assess. Presentation: Content is organized into 'cards' for each topic. Interactive lists with expand/collapse functionality manage information density. New 'Practice & Q&A' blocks use nested collapsible sections for questions and their hidden answers, allowing progressive disclosure. Interaction: The primary interaction is the sidebar navigation, which updates the main content view via JavaScript. Secondary interactions include toggling collapsible content for detailed information and revealing answers to Q&A. Method: HTML/CSS with Tailwind for structure and styling. Unicode characters are used for simple, lightweight icons. Justification: This approach avoids overwhelming the user with a long scroll, makes content easily discoverable, provides a clean, focused learning environment, and now actively engages the user in skill reinforcement. NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .nav-link.active {
+            background-color: #e0f2fe;
+            color: #0c4a6e;
+            font-weight: 600;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .collapsible-header {
+            cursor: pointer;
+        }
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .collapsible-content.open {
+            max-height: 500px;
+            transition: max-height 0.5s ease-in;
+        }
+        .collapsible-header .arrow {
+            transition: transform 0.3s ease;
+        }
+        .collapsible-header.open .arrow {
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <div class="flex h-screen">
+        <aside id="sidebar" class="w-64 bg-stone-100 p-4 border-r border-stone-200 overflow-y-auto transition-transform -translate-x-full md:translate-x-0 md:relative absolute h-full z-20">
+            <h1 class="text-xl font-bold text-stone-900 mb-4">Learning Hub</h1>
+            <nav id="navigation">
+                <ul>
+                    <li><button data-target="slide-1" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors active">Welcome</button></li>
+                    <li><button data-target="slide-2" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Why Tech Skills Matter</button></li>
+                    <li class="mt-4 pt-4 border-t border-stone-200">
+                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">1. Device Basics</h2>
+                        <ul>
+                            <li><button data-target="slide-3" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Understanding Your Device</button></li>
+                            <li><button data-target="slide-4" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Navigation & Settings</button></li>
+                            <li><button data-target="slide-5" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Accessibility Features</button></li>
+                        </ul>
+                    </li>
+                     <li class="mt-4 pt-4 border-t border-stone-200">
+                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">2. Communication</h2>
+                        <ul>
+                            <li><button data-target="slide-6" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Phone Calls & Texting</button></li>
+                            <li><button data-target="slide-7" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Email Essentials</button></li>
+                        </ul>
+                    </li>
+                     <li class="mt-4 pt-4 border-t border-stone-200">
+                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">3. Internet</h2>
+                        <ul>
+                            <li><button data-target="slide-8" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Internet Basics</button></li>
+                            <li><button data-target="slide-9" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Browsing & Downloads</button></li>
+                        </ul>
+                    </li>
+                    <li class="mt-4 pt-4 border-t border-stone-200">
+                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">4. Management</h2>
+                        <ul>
+                            <li><button data-target="slide-10" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Files & Cloud Storage</button></li>
+                            <li><button data-target="slide-11" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Navigating Online Forms</button></li>
+                        </ul>
+                    </li>
+                     <li class="mt-4 pt-4 border-t border-stone-200">
+                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">5. Safety</h2>
+                        <ul>
+                            <li><button data-target="slide-12" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Passwords</button></li>
+                            <li><button data-target="slide-13" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Recognizing Scams</button></li>
+                        </ul>
+                    </li>
+                    <li class="mt-4 pt-4 border-t border-stone-200">
+                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">6. Productivity Apps</h2>
+                        <ul>
+                            <li><button data-target="slide-18" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Microsoft Word</button></li>
+                            <li><button data-target="slide-19" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Microsoft Excel</button></li>
+                            <li><button data-target="slide-20" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Canva</button></li>
+                        </ul>
+                    </li>
+                     <li class="mt-4 pt-4 border-t border-stone-200">
+                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">7. Resources</h2>
+                        <ul>
+                            <li><button data-target="slide-14" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Online Learning</button></li>
+                            <li><button data-target="slide-15" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Local Support</button></li>
+                        </ul>
+                    </li>
+                    <li class="mt-4 pt-4 border-t border-stone-200">
+                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">Conclusion</h2>
+                         <ul>
+                            <li><button data-target="slide-16" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Your Tech Journey</button></li>
+                            <li><button data-target="slide-17" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Next Steps</button></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="bg-white/70 backdrop-blur-lg border-b border-stone-200 p-4 md:hidden sticky top-0 z-10 flex items-center">
+                 <button id="menu-toggle" class="p-2 mr-2 rounded-md hover:bg-stone-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                 </button>
+                 <h2 id="mobile-header" class="text-lg font-semibold">Welcome</h2>
+            </header>
+            <main class="flex-1 overflow-y-auto p-6 md:p-10">
+                <div id="content-container">
+                    <section id="slide-1" class="content-section active">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Welcome to PeerTech Support</h2>
+                        <p class="text-lg mb-6">Your guide to navigating technology.</p>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                            <h3 class="text-xl font-semibold mb-3">Purpose:</h3>
+                            <ul class="list-disc list-inside space-y-2 text-stone-700">
+                                <li>To empower you with essential digital skills.</li>
+                                <li>To make technology less intimidating and more accessible.</li>
+                                <li>To help you achieve your personal and practical goals through tech.</li>
+                            </ul>
+                            <p class="mt-6 text-md font-medium text-sky-700 bg-sky-50 p-4 rounded-lg">Your PeerTech Support Worker is here to help you explore and learn at your own pace.</p>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's start with a quick check-in:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 1: What are you hoping to learn or improve with technology?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: This is an open-ended question to help your PeerTech Support Worker understand your specific needs and goals.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-2" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Why Tech Skills Matter</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">🏠 Accessing Basic Needs</h3>
+                                <p>Online forms for housing, benefits, and healthcare.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">💬 Staying Connected</h3>
+                                <p>Communicate with family, friends, and support networks.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">💼 Employment & Education</h3>
+                                <p>Handle job applications, online learning, and skill-building.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">ℹ️ Information & Resources</h3>
+                                <p>Find reliable information and local services.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200 col-span-1 md:col-span-2">
+                                <h3 class="text-lg font-semibold mb-2">🚀 Personal Empowerment</h3>
+                                <p>Build confidence, independence, and create new opportunities.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Consider these scenarios:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 1: How can using a smartphone help you find information about a local food bank?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: You could use a search engine (like Google) on your smartphone to look up "food banks near me" or "local community services."</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Think of one way technology could help you with a daily task or goal.</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Consider communication, finding information, or managing personal details.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-3" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Understanding Your Device</h2>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🔋 Turning On/Off & Charging</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Locate the power button (usually on the side or top).</li>
+                                        <li>Understand battery indicators and charging symbols.</li>
+                                        <li>Tips for extending battery life (e.g., lower brightness, close unused apps).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🎛️ Buttons & Icons</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Identify Volume buttons and Home button/area.</li>
+                                        <li>Recognize common icons: Wi-Fi, cellular signal, battery, notifications.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">👆 Basic Gestures</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Tap: To select or open something.</li>
+                                        <li>Swipe: To scroll up/down or left/right.</li>
+                                        <li>Pinch-to-zoom: To make things bigger or smaller.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's practice some device basics:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Find the power button on your device. Can you turn the screen off and on?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: It's usually on the side or top edge of the phone.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: What does the Wi-Fi icon look like on your phone?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: It often looks like a series of curved lines radiating upwards, similar to a radio signal.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-4" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Navigation & Settings</h2>
+                         <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📱 Home Screen</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Finding and opening apps from the main screen.</li>
+                                        <li>Organizing apps into folders or pages.</li>
+                                        <li>Switching between currently open applications.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">⚙️ Settings Menu</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Connecting to Wi-Fi networks.</li>
+                                        <li>Adjusting screen brightness and font size for comfort.</li>
+                                        <li>Managing sound and vibration alerts.</li>
+                                        <li>Checking available storage space.</li>
+                                        <li>Understanding the importance of software updates for security and features.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's try navigating your device:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Open your phone's "Settings" app and try to find the Wi-Fi section.</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: The Settings app often has a gear icon (⚙️).</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: Why is it important to keep your phone's software updated?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Updates often include important security fixes and new features, keeping your phone safe and running smoothly.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-5" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Accessibility Features</h2>
+                        <p class="text-lg mb-6">Making your device easier to use for everyone.</p>
+                        <div class="space-y-4">
+                           <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">🗣️ Text-to-Speech/Screen Readers</h3>
+                                <p>Your device can read text on the screen aloud.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">🔍 Magnification</h3>
+                                <p>Zoom in on screen content to see it more clearly.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">🎨 Display Settings</h3>
+                                <p>Use high contrast mode, larger text, or color correction.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">🖐️ Customization</h3>
+                                <p>Adjust touch sensitivity, keyboard size, and more.</p>
+                            </div>
+                            <p class="mt-6 text-md font-medium text-sky-700 bg-sky-50 p-4 rounded-lg">Ask your PeerTech Support Worker to show you features that can help!</p>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Explore how to make your device more comfortable:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: In your device's Settings, find how to make the text size larger.</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Look for "Display" or "Accessibility" settings.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: What is one benefit of using a screen reader?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: It can help people with visual impairments access information on the screen by reading it aloud.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-6" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Phone Calls & Texting</h2>
+                        <div class="space-y-4">
+                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📞 Making & Receiving Calls</h3>
+                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Using the phone app to dial a number.</li>
+                                        <li>Answering and ending incoming calls.</li>
+                                        <li>Using the speakerphone option.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📖 Managing Contacts</h3>
+                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Adding new contacts to your phonebook.</li>
+                                        <li>Finding and editing existing contact information.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">💬 Text Messaging (SMS/MMS)</h3>
+                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Sending and receiving text messages.</li>
+                                        <li>Sending photos or videos in a message.</li>
+                                        <li>Understanding and participating in group chats.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's try some communication tasks:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Add a new contact to your phone (e.g., your PeerTech Support Worker's number).</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Look for a "Contacts" app or a plus (+) sign in your phone app.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: What is the main difference between a regular phone call and a text message?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: A phone call is live voice communication, while a text message is written communication that can be sent and read at any time.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-7" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Email Essentials</h2>
+                         <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">✉️ Setting Up & Using Email</h3>
+                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Choosing a provider (Gmail, Outlook) and creating an account.</li>
+                                        <li>Understanding your inbox, sent items, and folders.</li>
+                                        <li>Composing, replying to, and forwarding emails.</li>
+                                        <li>Understanding "To", "Cc", and "Bcc" fields.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📎 Attachments</h3>
+                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>How to open attachments you receive.</li>
+                                        <li>How to attach files like documents or photos to an email you're sending.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🎣 Spam & Phishing Awareness</h3>
+                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Learning to spot suspicious or "phishing" emails.</li>
+                                        <li>Never click on strange links or download unexpected files.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's work on email skills:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Compose a new email and send it to your PeerTech Support Worker (or a practice email address).</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Look for a "Compose" or "New Message" button, often represented by a plus (+) sign or a pen icon.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: What is the purpose of the "Cc" field in an email?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: "Cc" stands for Carbon Copy. It's used to send a copy of the email to someone who needs to be informed but isn't the primary recipient.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-8" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Internet Basics</h2>
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">🌐 What is the Internet?</h3>
+                                <p>A global network for information and communication.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">📶 Wi-Fi vs. Mobile Data</h3>
+                                <p>Wi-Fi is often free at places like libraries. Mobile data uses your phone plan.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">🧭 Web Browsers</h3>
+                                <p>Apps used to access the internet, like Chrome, Safari, or Firefox.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">🔍 Search Engines</h3>
+                                <p>Tools inside a browser to find information, like Google or Bing.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's test your internet knowledge:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Open a web browser on your device.</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Look for icons like a colorful circle (Chrome), a compass (Safari), or a fox (Firefox).</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: What is the main difference between Wi-Fi and mobile data?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Wi-Fi uses a local internet connection (like at a library or home) and is often free. Mobile data uses your phone's cellular network and is part of your phone plan, which typically costs money.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-9" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Browsing & Downloads</h2>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                            <h3 class="text-xl font-semibold mb-3">Navigating Websites</h3>
+                            <ul class="list-disc list-inside space-y-2 text-stone-700">
+                                <li>Typing website addresses (URLs) into the address bar.</li>
+                                <li>Using a search engine to find what you're looking for.</li>
+                                <li>Using the back and forward buttons to move between pages.</li>
+                                <li>Understanding tabs to keep multiple websites open at once.</li>
+                            </ul>
+                            <h3 class="text-xl font-semibold mb-3 mt-6">Downloads</h3>
+                             <ul class="list-disc list-inside space-y-2 text-stone-700">
+                                <li>Understanding what happens when you download a file (like a PDF or image).</li>
+                                <li>Knowing where downloaded files are typically saved on your device.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's practice searching and downloading:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Use a search engine to find the current weather in Toronto.</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Type "weather Toronto" into the search bar.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: What does it mean to "download" a file, and where does it usually go?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: To "download" means to copy a file from the internet to your device. It usually goes into a "Downloads" folder or your photo gallery if it's an image.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-10" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Files & Cloud Storage</h2>
+                        <div class="space-y-4">
+                           <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">📁 Understanding Files & Folders</h3>
+                                <p>Learn where your photos, documents, and downloads are stored. We can practice organizing them by creating folders, moving files, and deleting old items to free up space.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">☁️ Cloud Storage (Basic Concept)</h3>
+                                <p>Services like Google Drive, iCloud, or Dropbox let you store files online. Benefits include accessing your files from any device, having a secure backup, and easily sharing with others.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's practice file organization:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Find your "Downloads" folder on your device. What kind of files do you see there?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: On Android, look for a "Files" or "My Files" app. On iPhone, look in the "Files" app.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: What is one benefit of using cloud storage for your photos?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Your photos are backed up online, so if your phone is lost or broken, your pictures are still safe.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-11" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Navigating Online Forms</h2>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                            <h3 class="text-xl font-semibold mb-3">Common Tasks</h3>
+                            <ul class="list-disc list-inside space-y-3 text-stone-700">
+                                <li>Clicking into fields to type your information.</li>
+                                <li>Understanding required fields (often marked with an asterisk *).</li>
+                                <li>Using drop-down menus, checkboxes, and radio buttons to make selections.</li>
+                                <li>Uploading a document when requested (e.g., a photo of your ID, a resume). This means selecting a file from your device to attach to the form.</li>
+                                <li>Clicking the "Submit" or "Continue" button to complete the form.</li>
+                                <li>Knowing what to do if you get an error message.</li>
+                                <li>Looking for options to save your progress if it's a long form.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's practice filling out a simple form:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Imagine you're filling out an online survey. How would you select your favorite color from a list of options using a drop-down menu?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Click on the drop-down box, then click on your chosen color from the list that appears.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: What does an asterisk (*) next to a field on an online form usually mean?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: It means the field is required and must be filled out before you can submit the form.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                     <section id="slide-12" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Protecting Yourself: Passwords</h2>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                            <h3 class="text-xl font-semibold mb-3">Why Strong Passwords Matter</h3>
+                            <p class="mb-4">They are the first line of defense in protecting your personal information, your email, and your accounts from unauthorized access.</p>
+                            <h3 class="text-xl font-semibold mb-3">How to Create Strong Passwords</h3>
+                            <ul class="list-disc list-inside space-y-2 text-stone-700">
+                                <li>Use a mix of uppercase letters, lowercase letters, numbers, and symbols (like !, @, #).</li>
+                                <li>Make them long (at least 8-12 characters is a good start).</li>
+                                <li>Use unique passwords for each important account (email, banking).</li>
+                                <li>Avoid using personal information that's easy to guess (birthdays, names, pet's names).</li>
+                            </ul>
+                             <p class="mt-6 text-md font-medium text-red-700 bg-red-50 p-4 rounded-lg">Rule #1: Never share your passwords with anyone!</p>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's think about password safety:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 1: Is "password123" a strong password? Why or why not?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: No, it's a very weak password. It's short, uses common words, and a simple number sequence, making it easy to guess.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Think of a strong password idea using the tips provided (don't share the actual password!).</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Combine unrelated words, add numbers and symbols, and make it long.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-13" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Recognizing Scams & Staying Private</h2>
+                        <div class="space-y-4">
+                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🎣 Phishing & Online Scams</h3>
+                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>In emails/texts, look for bad grammar, urgent requests for money, and suspicious links.</li>
+                                        <li>Be wary of unsolicited calls asking for personal information or payment.</li>
+                                        <li>Rule of thumb: If an offer seems too good to be true, it probably is.</li>
+                                        <li>Always verify: If you're unsure about a message, contact the organization directly using their official website or phone number, not the one in the message.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🔒 Privacy Settings & Public Wi-Fi</h3>
+                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Understand what information you are sharing on apps and websites. Take a moment to check the privacy settings on social media.</li>
+                                        <li>Avoid sensitive activities like banking or logging into important accounts when using public, unsecured Wi-Fi.</li>
+                                        <li>Remember to install software updates, as they often include important security fixes.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's consider some safety scenarios:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 1: You receive an email from your bank asking you to click a link to "verify your account immediately." What should you do?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Do NOT click the link. Instead, go directly to your bank's official website (by typing the address yourself) or call them using a trusted phone number to check if there's an issue.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Think about a time you might use public Wi-Fi. What kind of online activity would you AVOID doing there?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Anything that involves your personal or financial information, like online banking or logging into email.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- NEW Productivity Apps Section -->
+                    <section id="slide-18" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Microsoft Word Basics</h2>
+                        <p class="text-lg mb-6">Learn to create and edit documents.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">📝 Creating & Saving Documents</h3>
+                                <p>How to open Word, start a new document, and save your work to avoid losing it.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">✍️ Basic Formatting</h3>
+                                <p>Making text bold, italic, or underlined. Changing font size and color.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">✂️ Copy, Cut, & Paste</h3>
+                                <p>Moving text around within your document or from another source.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">✅ Spell Check</h3>
+                                <p>Using the built-in tool to catch spelling and grammar mistakes.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's practice with Microsoft Word:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Open Microsoft Word and type your name. Then, make your name bold.</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Select your name, then look for a "B" icon (for Bold) in the toolbar.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: Why is it important to save your document often in Word?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Saving regularly prevents you from losing your work if the program crashes or the power goes out.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="slide-19" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Microsoft Excel Basics</h2>
+                        <p class="text-lg mb-6">Organize and work with numbers in spreadsheets.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">📊 Understanding Worksheets</h3>
+                                <p>What are cells, rows, and columns? How to navigate a spreadsheet.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">🔢 Entering Data</h3>
+                                <p>Typing numbers and text into cells.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">➕ Simple Sums</h3>
+                                <p>Using a basic formula to add numbers together.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">💾 Saving Your Spreadsheet</h3>
+                                <p>How to save your Excel file.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's practice with Microsoft Excel:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Open Excel. Type "Apples" in cell A1 and "5" in cell B1.</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Click on cell A1 (the box where column A and row 1 meet) and type, then press Enter or click on B1.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: What is the difference between a "row" and a "column" in Excel?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Rows go horizontally (numbered 1, 2, 3...), and columns go vertically (lettered A, B, C...).</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="slide-20" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Canva Basics</h2>
+                        <p class="text-lg mb-6">Create beautiful designs easily for social media, flyers, and more.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">🎨 Finding & Using Templates</h3>
+                                <p>How to choose a pre-made design for your project (e.g., social media post, flyer).</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">✍️ Adding & Editing Text</h3>
+                                <p>How to add headings, subheadings, and body text, and change their size, color, and font.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">🖼️ Adding & Arranging Images</h3>
+                                <p>Uploading your own photos or using Canva's free images. Moving and resizing them.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">⬇️ Downloading Your Design</h3>
+                                <p>Saving your finished design as an image (PNG, JPG) or PDF.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's try some Canva design tasks:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Open Canva and try to find a template for a "Social Media Post."</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Use the search bar on Canva's homepage or look through the categories.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: What is a benefit of using a template in Canva instead of starting from scratch?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Templates provide a professional starting point, saving you time and ensuring a good design even if you're not an artist.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- END NEW Productivity Apps Section -->
+
+                     <section id="slide-14" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Online Learning Platforms</h2>
+                        <div class="space-y-4">
+                           <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">GCFLearnFree.org</h3>
+                                <p>Offers free, easy-to-understand tutorials on almost any tech topic, with videos and practice activities.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">YouTube</h3>
+                                <p>Great for visual learners. You can search for specific "how-to" videos. (Tip: Look for recent videos from reputable sources).</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">Your Local Library</h3>
+                                <p>Many libraries, including the Toronto Public Library, offer free computer access and may have online courses or in-person tech help.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Let's find some learning resources:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Go to GCFLearnFree.org and find a tutorial on "Basic Computer Skills."</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Use the search bar on their website.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 2: What kind of tech support might your local library offer?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: They might have free computer access, Wi-Fi, or even staff who can provide basic tech help or refer you to online courses.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-15" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Local Support & Tools</h2>
+                        <div class="space-y-4">
+                           <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">Community Centers & Libraries</h3>
+                                <p>These are great places for free computer access, Wi-Fi, and sometimes tech support sessions.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">Digital Literacy & Job Search Programs</h3>
+                                <p>Ask your PeerTech worker for information on local programs in Toronto that can help with online applications, resumes, and interviews.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">Low-Cost Internet & Devices</h3>
+                                <p>There are programs available that can help you get access to affordable internet services and devices.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Consider how to find local help:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 1: If you needed free Wi-Fi, where is one place in your community you could go?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: A local public library or community center often provides free Wi-Fi access.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Ask your PeerTech Support Worker about any local programs that offer low-cost internet or devices.</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: This is a direct action to connect with available resources.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-16" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Your Tech Journey</h2>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                            <h3 class="text-xl font-semibold mb-3">Remember:</h3>
+                            <ul class="list-disc list-inside space-y-2 text-stone-700">
+                                <li>Every small step forward is a success!</li>
+                                <li>It's okay to ask questions and take your time.</li>
+                                <li>Technology is a tool to help you.</li>
+                            </ul>
+                            <h3 class="text-xl font-semibold mb-3 mt-6">Your PeerTech Support Worker is here to:</h3>
+                             <ul class="list-disc list-inside space-y-2 text-stone-700">
+                                <li>Listen to your needs.</li>
+                                <li>Help you set and achieve your tech goals.</li>
+                                <li>Provide patient, supportive guidance.</li>
+                                <li>Connect you with further resources.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">Reflect on your learning:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 1: What is one new thing you learned or practiced today that you feel more confident about?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: (This is a personal reflection question for the user).</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Identify one tech skill you'd like to focus on improving in your next session.</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Think about what would be most helpful for your daily life or goals.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-17" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Questions & Next Steps</h2>
+                        <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-200 text-center">
+                            <p class="text-xl mb-4">What are you hoping to work on next?</p>
+                            <p class="text-lg text-stone-600 mb-6">Do you have any questions about what we covered today?</p>
+                            <button class="bg-sky-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-sky-700 transition-colors">Let's plan our next session!</button>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Session Wrap-up</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p class="mb-4 text-sky-700 p-2">A final thought for your session:</p>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 1: How do you feel about using technology after today's session?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: (This is a final reflective question to gauge confidence and understanding.)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navigationLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const mobileHeader = document.getElementById('mobile-header');
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        function switchTab(targetId) {
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            const activeSection = document.getElementById(targetId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+
+            navigationLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.target === targetId) {
+                    link.classList.add('active');
+                    if(mobileHeader) {
+                        mobileHeader.textContent = link.textContent;
+                    }
+                }
+            });
+        }
+
+        navigationLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                switchTab(targetId);
+                if (sidebar.classList.contains('md:relative')) {
+                   sidebar.classList.add('-translate-x-full');
+                }
+            });
+        });
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+        }
+
+        const collapsibleHeaders = document.querySelectorAll('.collapsible-header');
+        collapsibleHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                this.classList.toggle('open');
+                const content = this.nextElementSibling;
+                if (content.classList.contains('open')) {
+                    content.classList.remove('open');
+                    content.style.maxHeight = null;
+                } else {
+                    content.classList.add('open');
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+
+        switchTab('slide-1');
+    });
+</script>
+
+</body>
+</html>
