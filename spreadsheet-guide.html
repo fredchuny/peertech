@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel & Spreadsheet Basics: Easy & Fun Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #334155;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        .section-title {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700; /* font-bold */
+            color: #1e293b; /* slate-800 */
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .example-title {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 600; /* font-semibold */
+            color: #3b82f6; /* blue-500 */
+            margin-bottom: 0.75rem;
+        }
+        .difficulty-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px; /* rounded-full */
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500; /* font-medium */
+            margin-bottom: 0.75rem;
+        }
+        .difficulty-easy {
+            background-color: #dcfce7; /* green-100 */
+            color: #16a34a; /* green-600 */
+        }
+        .difficulty-moderate {
+            background-color: #fef9c3; /* yellow-100 */
+            color: #eab308; /* yellow-600 */
+        }
+        .difficulty-difficult {
+            background-color: #fee2e2; /* red-100 */
+            color: #dc2626; /* red-600 */
+        }
+        .toggle-button {
+            background-color: #3b82f6; /* blue-500 */
+            color: #ffffff;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem; /* rounded-lg */
+            font-weight: 600; /* font-semibold */
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            margin-top: 1rem;
+        }
+        .toggle-button:hover {
+            background-color: #2563eb; /* blue-600 */
+        }
+        .instructions {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8fafc; /* slate-50 */
+            border-left: 4px solid #3b82f6; /* blue-500 */
+            border-radius: 0.5rem;
+            display: none; /* Hidden by default */
+        }
+        .instructions ol {
+            list-style-type: decimal;
+            margin-left: 1.25rem;
+        }
+        .instructions ul {
+            list-style-type: disc;
+            margin-left: 1.25rem;
+        }
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+        .shortcut-item {
+            background-color: #e2e8f0; /* slate-200 */
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            font-weight: 600;
+            color: #1e293b;
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-extrabold text-slate-900 mb-4">Mastering Spreadsheets: Your Easy & Fun Guide!</h1>
+            <p class="text-xl text-slate-600">Learn Excel and other spreadsheets with fun examples and simple tips.</p>
+        </header>
+
+        <section class="mb-16">
+            <h2 class="section-title">Welcome to Spreadsheet Fun!</h2>
+            <div class="card">
+                <p class="text-lg leading-relaxed">
+                    Welcome! This website helps you learn Excel and other spreadsheet programs in a fun, hands-on way. Whether you're just starting or want to get better, our easy examples and clear steps will help you. We believe the best way to learn is by doing, so let's jump in!
+                </p>
+                <p class="text-lg leading-relaxed mt-4">
+                    Spreadsheets are super helpful tools for putting data in order, doing math, and looking at information. From keeping track of your daily spending to managing big projects, knowing how to use spreadsheets is a great skill to have. Let's begin!
+                </p>
+            </div>
+        </section>
+
+        <hr class="border-t-2 border-blue-200 my-16">
+
+        <section class="mb-16">
+            <h2 class="section-title">Fun Practice Activities!</h2>
+            <p class="text-lg text-center mb-8 text-slate-700">Practice is key! Try these examples in your own spreadsheet program (like Microsoft Excel, Google Sheets, or LibreOffice Calc).</p>
+
+            <!-- Easy Examples -->
+            <h3 class="text-3xl font-bold text-slate-800 mb-6 text-center">Easy Examples: Getting Started</h3>
+
+            <div class="card">
+                <span class="difficulty-tag difficulty-easy">Easy</span>
+                <h4 class="example-title">1. Royal Castle Inventory: Basic Typing & Making Things Look Good</h4>
+                <p class="text-md text-slate-700 mb-4">You're in charge of all the treasures and supplies in a grand castle! Let's put your royal items and feast ingredients in order using basic spreadsheet skills.</p>
+                <button class="toggle-button" onclick="toggleInstructions('example1-instructions')">Show Steps</button>
+                <div id="example1-instructions" class="instructions">
+                    <p class="font-semibold text-lg mb-2">Goal: Make a simple list of castle items and make them look nice.</p>
+                    <ol>
+                        <li><strong>Open a new spreadsheet:</strong> Start a fresh, empty sheet.</li>
+                        <li><strong>Set up Column Titles:</strong>
+                            <ul>
+                                <li>In cell <strong>A1</strong>, type "Castle Item".</li>
+                                <li>In cell <strong>B1</strong>, type "How Many (Units)".</li>
+                                <li>In cell <strong>C1</strong>, type "Last Time Stocked".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Basic Typing:</strong>
+                            <ul>
+                                <li>In cell <strong>A2</strong>, type "Dragon Scales".</li>
+                                <li>In cell <strong>B2</strong>, type "500".</li>
+                                <li>In cell <strong>C2</strong>, type "2025-07-28".</li>
+                                <li>Add a few more items below "Dragon Scales" (like "Magic Wands", "Sparkling Potions") with how many you have and their dates.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Making Things Look Good (Formatting):</strong>
+                            <ul>
+                                <li>Pick cells <strong>A1</strong> to <strong>C1</strong> (these are your titles).</li>
+                                <li>Make them <strong>Bold</strong>.</li>
+                                <li>Pick cell <strong>A2</strong> ("Dragon Scales"). Make it <em>Italic</em>.</li>
+                                <li>Highlight cell <strong>B2</strong> ("500") with a light background color (like light yellow, like gold!).</li>
+                            </ul>
+                        </li>
+                        <li><strong>Date Formatting:</strong>
+                            <ul>
+                                <li>Pick the cells in your "Last Time Stocked" column (like <strong>C2:C5</strong>).</li>
+                                <li>Right-click on the cells you picked and choose "Format Cells..." (or "Format" > "Number" > "Date" in Google Sheets).</li>
+                                <li>Change the date to something fun like "July 28, 2025" or "28-Jul-2025".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Understanding Cells:</strong>
+                            <ul>
+                                <li>Find cell <strong>C5</strong>. What's written in it?</li>
+                                <li>If your castle had a super big list, where would cell <strong>AA3</strong> be? (Hint: after column Z, it starts with AA, AB, and so on.)</li>
+                                <li>Why are cell names important? (They help formulas find the right numbers, like knowing exactly where your "Sparkling Potions" count is!)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Changing Column/Row Size:</strong>
+                            <ul>
+                                <li>Move your mouse between column titles <strong>A</strong> and <strong>B</strong>. Your mouse will change to a double arrow. Click and <strong>drag</strong> to make column A wider.</li>
+                                <li>Or, <strong>right-click</strong> on a column title (like <strong>A</strong>) and pick "Column Width..." to type in a number for its size.</li>
+                                <li>Do the same for row height (between row numbers <strong>1</strong> and <strong>2</strong>).</li>
+                                <li><strong>Auto-adjust:</strong> Double-click the line between two column titles (like A and B) to make the column just wide enough for what's inside.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Add a New Row for a Title (Just before Merging!):</strong>
+                            <ul>
+                                <li>Right-click on the row number <strong>1</strong> (on the far left).</li>
+                                <li>Choose "Insert" or "Insert Row Above". This will make a new, empty row at the very top. Your old titles will now be in Row 2.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Merge Cells (Combine Cells for a Big Title):</strong>
+                            <ul>
+                                <li>Pick cells <strong>A1</strong> to <strong>C1</strong> (the new, empty row you just added).</li>
+                                <li>Find the "Merge & Center" button (it's usually in the "Home" tab, under "Alignment"). Click it. This joins the cells.</li>
+                                <li>Now, type "Grand Castle Inventory Report" in the newly merged cell <strong>A1</strong>. This makes a nice big title for your whole list!</li>
+                            </ul>
+                        </li>
+                        <li><strong>Table Styling (Making a Table Look Good):</strong>
+                            <ul>
+                                <li>Pick all your data (from your new title, like <strong>A1:C6</strong>, or just your data and headers, like <strong>A2:C6</strong>).</li>
+                                <li>Go to "Format as Table" (in Excel) or "Format" > "Alternating colors" (in Google Sheets) to pick ready-made table styles. Make your castle inventory look amazing!</li>
+                            </ul>
+                        </li>
+                        <li><strong>Challenge:</strong> Now, try to make this royal inventory all by yourself from the start!</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="difficulty-tag difficulty-easy">Easy</span>
+                <h4 class="example-title">2. Bakery Treat Tracker: Making Your List & AutoFill Fun!</h4>
+                <p class="text-md text-slate-700 mb-4">You run a super popular bakery! Help keep track of how many delicious treats you bake each day. It's about making a neat, clear list, and letting Excel do some work for you!</p>
+                <button class="toggle-button" onclick="toggleInstructions('example2-instructions')">Show Steps</button>
+                <div id="example2-instructions" class="instructions">
+                    <p class="font-semibold text-lg mb-2">Goal: Make a simple list for bakery treat costs and use AutoFill.</p>
+                    <ol>
+                        <li><strong>Set up Columns (Make your main titles):</strong>
+                            <ul>
+                                <li>In cell <strong>A1</strong>, type "Day of the Week".</li>
+                                <li>In cell <strong>B1</strong>, type "Cost of Ingredients ($)".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Enter Data (Put in your information):</strong>
+                            <ul>
+                                <li>In cell <strong>A2</strong>, type "Monday".</li>
+                                <li>In cell <strong>A3</strong>, type "Tuesday".</li>
+                                <li>In cell <strong>A4</strong>, type "Wednesday".</li>
+                                <li>In cell <strong>B2</strong>, type "50".</li>
+                                <li>In cell <strong>B3</strong>, type "65".</li>
+                                <li>In cell <strong>B4</strong>, type "70".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Autofill Days (Fill in days automatically):</strong>
+                            <ul>
+                                <li>Pick cells <strong>A2</strong> to <strong>A4</strong> ("Monday" to "Wednesday").</li>
+                                <li>Drag the small square (fill handle) at the bottom-right corner of cell <strong>A4</strong> down to <strong>A6</strong>. This should automatically fill in "Thursday" and "Friday".</li>
+                                <li>Put in ingredient costs for Thursday (like 55) and Friday (like 80) in cells <strong>B5</strong> and <strong>B6</strong> respectively.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Autofill Numbers (Fill in numbers automatically):</strong>
+                            <ul>
+                                <li>In cell <strong>A10</strong>, type "1".</li>
+                                <li>In cell <strong>A11</strong>, type "2".</li>
+                                <li>Pick both cells <strong>A10</strong> and <strong>A11</strong>. Drag the small square (fill handle) at the bottom-right corner downwards. What happens? (It should fill in 3, 4, 5, etc. – perfect for numbering your baking batches!)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Make Titles Stand Out:</strong>
+                            <ul>
+                                <li>Pick cells <strong>A1</strong> and <strong>B1</strong>.</li>
+                                <li>Make them <strong>Bold</strong>.</li>
+                                <li>Use the "Center" button to put the text in the middle of these cells.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Great job!</strong> You just made your first simple list for bakery treats and used AutoFill. This organized info is what makes spreadsheets so useful, even for delicious pastries!</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="difficulty-tag difficulty-easy">Easy</span>
+                <h4 class="example-title">3. Pet Shop Budget</h4>
+                <p class="text-md text-slate-700 mb-4">You own a busy pet shop with puppies, kittens, and talking parrots! Make a simple monthly budget to keep track of how much you spend on their food and care.</p>
+                <button class="toggle-button" onclick="toggleInstructions('example3-instructions')">Show Steps</button>
+                <div id="example3-instructions" class="instructions">
+                    <p class="font-semibold text-lg mb-2">Goal: Organize your pet shop money.</p>
+                    <ol>
+                        <li><strong>Set up Headers (Main titles):</strong>
+                            <ul>
+                                <li>In <strong>A1</strong>, type "Pet Shop Category".</li>
+                                <li>In <strong>B1</strong>, type "Money Spent ($)".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Enter Income (Money you get from pets):</strong>
+                            <ul>
+                                <li>In <strong>A2</strong>, type "Monthly Sales".</li>
+                                <li>In <strong>B2</strong>, type how much money you think you'll get each month (like "3000").</li>
+                            </ul>
+                        </li>
+                        <li><strong>Enter Expenses (Money you spend):</strong>
+                            <ul>
+                                <li>In <strong>A3</strong>, type "Puppy Food". In <strong>B3</strong>, type how much you spend on puppy food (like "1000").</li>
+                                <li>In <strong>A4</strong>, type "Kitten Toys". In <strong>B4</strong>, type how much you spend on toys (like "400").</li>
+                                <li>In <strong>A5</strong>, type "Parrot Seeds". In <strong>B5</strong>, type how much you spend on seeds (like "150").</li>
+                                <li>Add a few more pet shop costs (like "Fish Tank Supplies", "Bird Cages").</li>
+                            </ul>
+                        </li>
+                        <li><strong>Format as Money:</strong> Pick all the numbers in Column B (like <strong>B2:B7</strong>) and make them look like money (like "$").</li>
+                        <li><strong>Bold Headers:</strong> Make <strong>A1</strong> and <strong>B1</strong> bold.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="difficulty-tag difficulty-easy">Easy</span>
+                <h4 class="example-title">4. Adventure Gear Packing List</h4>
+                <p class="text-md text-slate-700 mb-4">You're planning an exciting adventure – maybe climbing a tall mountain, or exploring a deep jungle! Make a packing list so you don't forget your hiking boots or your compass.</p>
+                <button class="toggle-button" onclick="toggleInstructions('example4-instructions')">Show Steps</button>
+                <div id="example4-instructions" class="instructions">
+                    <p class="font-semibold text-lg mb-2">Goal: Make a list of things you need to pack, how many, and how much they cost for your adventure.</p>
+                    <ol>
+                        <li><strong>Set up Headers (Main titles):</strong>
+                            <ul>
+                                <li>In <strong>A1</strong>, type "Adventure Item".</li>
+                                <li>In <strong>B1</strong>, type "How Many Needed".</li>
+                                <li>In <strong>C1</strong>, type "Guess Cost (each item)".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Enter Items:</strong>
+                            <ul>
+                                <li>In <strong>A2</strong>, type "Hiking Boots". In <strong>B2</strong>, type "1". In <strong>C2</strong>, type "120.00".</li>
+                                <li>In <strong>A3</strong>, type "Water Bottle". In <strong>B3</strong>, type "2". In <strong>C3</strong>, type "15.00".</li>
+                                <li>Add at least 3 more fun items to your packing list (like "Binoculars", "First Aid Kit").</li>
+                            </ul>
+                        </li>
+                        <li><strong>Format Prices:</strong> Pick the "Guess Cost" column (like <strong>C2:C5</strong>) and make them look like money.</li>
+                        <li><strong>Adjust Column Widths:</strong> Use the auto-adjust trick (double-click between column titles) to make sure you can see all your adventure items clearly.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="difficulty-tag difficulty-easy">Easy</span>
+                <h4 class="example-title">5. Neighborhood Friends Directory</h4>
+                <p class="text-md text-slate-700 mb-4">You have lots of friends in your neighborhood! Put their names, phone numbers, and favorite hobbies in a neat list.</p>
+                <button class="toggle-button" onclick="toggleInstructions('example5-instructions')">Show Steps</button>
+                <div id="example5-instructions" class="instructions">
+                    <p class="font-semibold text-lg mb-2">Goal: Make an organized list for your friends.</p>
+                    <ol>
+                        <li><strong>Set up Headers (Main titles):</strong>
+                            <ul>
+                                <li>In <strong>A1</strong>, type "Friend's Name".</li>
+                                <li>In <strong>B1</strong>, type "Phone Number".</li>
+                                <li>In <strong>C1</strong>, type "Favorite Hobby".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Enter Contacts:</strong>
+                            <ul>
+                                <li>In <strong>A2</strong>, type "Lily Green". In <strong>B2</strong>, type "555-123-4567". In <strong>C2</strong>, type "Gardening".</li>
+                                <li>Add at least 2 more made-up friends (like "Tom Blue", "Sarah Red").</li>
+                            </ul>
+                        </li>
+                        <li><strong>Apply Table Styling (Make it look like a nice table):</strong> Pick your whole friends list (like <strong>A1:C4</strong>) and pick a "Format as Table" style (Excel) or "Alternating colors" (Google Sheets) to make it look good and easy to read.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Moderate Examples -->
+            <h3 class="text-3xl font-bold text-slate-800 mb-6 mt-12 text-center">Medium Examples: Using Formulas!</h3>
+
+            <div class="card">
+                <span class="difficulty-tag difficulty-moderate">Moderate</span>
+                <h4 class="example-title">6. Bakery Treat Tracker: Formulas in Action!</h4>
+                <p class="text-md text-slate-700 mb-4">Let's keep working on our bakery treat tracker! Now we'll add smart formulas to figure out the total cost of ingredients and the average daily cost.</p>
+                <button class="toggle-button" onclick="toggleInstructions('example6-instructions')">Show Steps</button>
+                <div id="example6-instructions" class="instructions">
+                    <p class="font-semibold text-lg mb-2">Goal: Add up and find the average of ingredient costs, and total cost for each day.</p>
+                    <p class="text-md mb-4"><strong>Remember:</strong> The equal sign (<strong>=</strong>) is the magic button that tells Excel you want it to do math!</p>
+                    <ol>
+                        <li><strong>Start with your "Bakery Treat Tracker" from Example 2.</strong> Make sure you have data for Monday to Friday in columns A and B.</li>
+                        <li><strong>Calculate Total Ingredient Cost:</strong>
+                            <ul>
+                                <li>In cell <strong>A7</strong>, type "Total Ingredient Cost".</li>
+                                <li>In cell <strong>B7</strong>, type <strong>=SUM(</strong></li>
+                                <li>Then, <strong>drag your mouse</strong> from cell <strong>B2</strong> down to <strong>B6</strong> (this picks the group of cells <strong>B2:B6</strong>).</li>
+                                <li>Type the closing curvy bracket <strong>)</strong> and press <strong>Enter</strong>.</li>
+                                <li>You just made your first formula! The total cost of ingredients for the week should show up.</li>
+                            </ul>
+                        </li>
+                        <li><strong>See the Formula Magic:</strong>
+                            <ul>
+                                <li>Change the ingredient cost for Wednesday in cell <strong>B4</strong> from "70" to "90".</li>
+                                <li>Notice how the "Total Ingredient Cost" in cell <strong>B7</strong> changes by itself! This is why formulas are so powerful – no more counting by hand for your delicious treats!</li>
+                            </ul>
+                        </li>
+                        <li><strong>Calculate Average Daily Cost:</strong>
+                            <ul>
+                                <li>In cell <strong>A8</strong>, type "Average Daily Cost".</li>
+                                <li>In cell <strong>B8</strong>, type <strong>=AVERAGE(B2:B6)</strong> and press <strong>Enter</strong>. This will show the average amount spent on ingredients each day.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Add "Number of Treats Baked" Column:</strong>
+                            <ul>
+                                <li>In cell <strong>C1</strong>, type "Treats Baked".</li>
+                                <li>In cells <strong>C2</strong> to <strong>C5</strong>, type "100".</li>
+                                <li>In cell <strong>C6</strong>, type "120".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Calculate "Total Cost per Day" Column:</strong>
+                            <ul>
+                                <li>In cell <strong>D1</strong>, type "Total Cost per Day".</li>
+                                <li>In cell <strong>D2</strong>, type <strong>=B2*C2</strong> and press <strong>Enter</strong>. (This multiplies the ingredient cost by how many treats were baked for Monday).</li>
+                                <li>Pick cell <strong>D2</strong>. Drag the small square (fill handle) at the bottom-right corner of cell <strong>D2</strong> down to <strong>D6</strong>. This will automatically fill the formula for all the other days.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Calculate Grand Total for "Total Cost per Day":</strong>
+                            <ul>
+                                <li>In cell <strong>D7</strong>, type <strong>=SUM(D2:D6)</strong> and press <strong>Enter</strong>.</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="difficulty-tag difficulty-moderate">Moderate</span>
+                <h4 class="example-title">7. Detective Agency Case Stats</h4>
+                <p class="text-md text-slate-700 mb-4">You're the smart leader of a detective agency! Look at your team's case results to find out the total mysteries solved, average clues found, and bonus points earned.</p>
+                <button class="toggle-button" onclick="toggleInstructions('example7-instructions')">Show Steps</button>
+                <div id="example7-instructions" class="instructions">
+                    <p class="font-semibold text-lg mb-2">Goal: Use SUM, AVERAGE, and multiply to check detective cases.</p>
+                    <ol>
+                        <li><strong>Set up Data:</strong>
+                            <ul>
+                                <li>In <strong>A1</strong>, type "Detective Name".</li>
+                                <li>In <strong>B1</strong>, type "Mysteries Solved".</li>
+                                <li>In <strong>A2</strong>, type "Detective Smith". In <strong>B2</strong>, type "15".</li>
+                                <li>In <strong>A3</strong>, type "Agent Jones". In <strong>B3</strong>, type "22".</li>
+                                <li>In <strong>A4</strong>, type "Sleuth Miller". In <strong>B4</strong>, type "18".</li>
+                                <li>In <strong>A5</strong>, type "Inspector Davis". In <strong>B5</strong>, type "25".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Calculate Total Mysteries Solved:</strong>
+                            <ul>
+                                <li>In <strong>A7</strong>, type "Total Mysteries".</li>
+                                <li>In <strong>B7</strong>, type <strong>=SUM(B2:B5)</strong>.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Calculate Average Mysteries Solved:</strong>
+                            <ul>
+                                <li>In <strong>A8</strong>, type "Average Mysteries per Detective".</li>
+                                <li>In <strong>B8</strong>, type <strong>=AVERAGE(B2:B5)</strong>.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Calculate Bonus Points:</strong> (Let's say you get 10 bonus points for every 5 mysteries solved)
+                            <ul>
+                                <li>In <strong>C1</strong>, type "Bonus Points (per 5 mysteries)".</li>
+                                <li>In <strong>C2</strong>, type <strong>=INT(B2/5)*10</strong>. (INT means it rounds down to a whole number).</li>
+                                <li>Drag the fill handle down from <strong>C2</strong> to <strong>C5</strong> to use the formula for all detectives.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Bold Headers:</strong> Make your titles bold so the Chief can see them clearly!</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="difficulty-tag difficulty-moderate">Moderate</span>
+                <h4 class="example-title">8. School Sports Team Scores</h4>
+                <p class="text-md text-slate-700 mb-4">You're the coach of a school sports team! Figure out the average scores for your players across different games or events.</p>
+                <button class="toggle-button" onclick="toggleInstructions('example8-instructions')">Show Steps</button>
+                <div id="example8-instructions" class="instructions">
+                    <p class="font-semibold text-lg mb-2">Goal: Find the average scores for sports players.</p>
+                    <ol>
+                        <li><strong>Set up Data:</strong>
+                            <ul>
+                                <li>In <strong>A1</strong>, type "Player Name".</li>
+                                <li>In <strong>B1</strong>, type "Game 1 Score".</li>
+                                <li>In <strong>C1</strong>, type "Game 2 Score".</li>
+                                <li>In <strong>D1</strong>, type "Game 3 Score".</li>
+                                <li>In <strong>E1</strong>, type "Average Score".</li>
+                                <li>Put in scores for 3-4 players (like Alex, Ben, Chris) for each game (like 85, 92, 78).</li>
+                            </ul>
+                        </li>
+                        <li><strong>Calculate Average Score:</strong>
+                            <ul>
+                                <li>In cell <strong>E2</strong> (for the first player), type <strong>=AVERAGE(B2:D2)</strong>.</li>
+                                <li>Drag the fill handle down from <strong>E2</strong> to use the formula for all players.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Format Scores:</strong> Pick the score columns and the average column, and make them show 1 or 2 numbers after the dot.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Difficult Examples -->
+            <h3 class="text-3xl font-bold text-slate-800 mb-6 mt-12 text-center">Harder Examples: Advanced Tricks!</h3>
+
+            <div class="card">
+                <span class="difficulty-tag difficulty-difficult">Difficult</span>
+                <h4 class="example-title">9. Toy Store Inventory: Color-Coding Data</h4>
+                <p class="text-md text-slate-700 mb-4">You run a fun toy store, and you want to quickly see which toys are selling super well and which are... gathering dust. Use special coloring to automatically highlight your best-selling toys!</p>
+                <button class="toggle-button" onclick="toggleInstructions('example9-instructions')">Show Steps</button>
+                <div id="example9-instructions" class="instructions">
+                    <p class="font-semibold text-lg mb-2">Goal: Make toy sales different colors based on how well they sell.</p>
+                    <ol>
+                        <li><strong>Create Toy Sales Data:</strong>
+                            <ul>
+                                <li>In <strong>A1</strong>, type "Toy Name".</li>
+                                <li>In <strong>B1</strong>, type "Units Sold This Month".</li>
+                                <li>In <strong>A2</strong>, type "Robot Buddy". In <strong>B2</strong>, type "150".</li>
+                                <li>In <strong>A3</strong>, type "Magic Slime". In <strong>B3</strong>, type "220".</li>
+                                <li>In <strong>A4</strong>, type "Building Blocks". In <strong>B4</strong>, type "80".</li>
+                                <li>In <strong>A5</strong>, type "Stuffed Animals". In <strong>B5</strong>, type "250".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Apply Special Coloring (Conditional Formatting):</strong>
+                            <ul>
+                                <li>Pick the "Units Sold This Month" column (like <strong>B2:B5</strong>).</li>
+                                <li>Go to the "Conditional Formatting" button (usually in the Home tab).</li>
+                                <li>Choose "Highlight Cells Rules" > "Greater Than...".</li>
+                                <li>Type a number (like "200") and pick a bright green color fill with dark green text. Click OK. (These are your best sellers!)</li>
+                                <li>Now, do it again: pick the same cells, choose "Highlight Cells Rules" > "Less Than...".</li>
+                                <li>Type a number (like "100") and pick a light red color fill with dark red text. Click OK. (These are the toys that need a boost!)</li>
+                            </ul>
+                        </li>
+                        <li><strong>See the Colors:</strong> Cells with units sold above 200 should be green, and those below 100 should be red. This quickly shows you your best and slowest-selling toys!</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="difficulty-tag difficulty-difficult">Difficult</span>
+                <h4 class="example-title">10. Recipe Finder: Finding Info with VLOOKUP/XLOOKUP</h4>
+                <p class="text-md text-slate-700 mb-4">You're a master chef, and you need to quickly find ingredients for your amazing recipes from a big cookbook spreadsheet. Learn how to find specific info from a big list!</p>
+                <button class="toggle-button" onclick="toggleInstructions('example10-instructions')">Show Steps</button>
+                <div id="example10-instructions" class="instructions">
+                    <p class="font-semibold text-lg mb-2">Goal: Learn how to pull information (ingredients) from another list.</p>
+                    <p class="text-md mb-4"><strong>Idea:</strong> Imagine you have a list of recipes with their names and main ingredients. You want to quickly find the main ingredient just by knowing the recipe name. That's what VLOOKUP (or the newer XLOOKUP) does!</p>
+                    <ol>
+                        <li><strong>Make a "Recipe Book" List (Sheet2):</strong>
+                            <ul>
+                                <li>Open a new sheet (like Sheet2).</li>
+                                <li>In <strong>A1</strong>, type "Recipe Name". In <strong>B1</strong>, type "Main Ingredient".</li>
+                                <li>Put in some recipes:
+                                    <ul>
+                                        <li>A2: "Chocolate Cake", B2: "Cocoa Powder"</li>
+                                        <li>A3: "Spicy Chili", B3: "Ground Beef"</li>
+                                        <li>A4: "Lemonade", B4: "Lemons"</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>Make a "Today's Menu" List (Sheet1):</strong>
+                            <ul>
+                                <li>Go back to your first sheet (like Sheet1).</li>
+                                <li>In <strong>A10</strong>, type "Recipe for Today". In <strong>B10</strong>, type "Main Ingredient Needed".</li>
+                                <li>In <strong>A11</strong>, type "Spicy Chili".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Use VLOOKUP (for older Excel) or XLOOKUP (for newer Excel/Google Sheets):</strong>
+                            <ul>
+                                <li>In cell <strong>B11</strong>, type this formula:
+                                    <pre class="bg-gray-100 p-2 rounded-md my-2 text-sm"><code>=VLOOKUP(A11,Sheet2!A:B,2,FALSE)</code></pre>
+                                    <p class="text-sm text-slate-600"><strong>What it means:</strong><br>
+                                    <strong>A11</strong>: What you're looking for (the Recipe Name).<br>
+                                    <strong>Sheet2!A:B</strong>: Where to look (all of columns A and B on Sheet2 - your Recipe Book).<br>
+                                    <strong>2</strong>: Which column to get the answer from in your cookbook (the 2nd column, which is Main Ingredient).<br>
+                                    <strong>FALSE</strong>: Means find an exact match.</p>
+                                    <p class="text-sm text-slate-600 mt-2">If you have XLOOKUP (it's better for newer versions):</p>
+                                    <pre class="bg-gray-100 p-2 rounded-md my-2 text-sm"><code>=XLOOKUP(A11,Sheet2!A:A,Sheet2!B:B)</code></pre>
+                                    <p class="text-sm text-slate-600"><strong>What it means:</strong><br>
+                                    <strong>A11</strong>: What you're looking for (the Recipe Name).<br>
+                                    <strong>Sheet2!A:A</strong>: Where to look for the Recipe Name (column A on Sheet2).<br>
+                                    <strong>Sheet2!B:B</strong>: The column to get the answer from (column B on Sheet2).</p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>Change Recipe:</strong> Change "Spicy Chili" in <strong>A11</strong> to "Chocolate Cake" or "Lemonade". See how the main ingredient changes by itself!</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="difficulty-tag difficulty-difficult">Difficult</span>
+                <h4 class="example-title">11. Garden Plant Tracker: Making Sure Data is Right</h4>
+                <p class="text-md text-slate-700 mb-4">As a skilled gardener, you need to make sure you plant the right types of seeds in your garden. Set up rules to control what people type in, so you don't accidentally plant a cactus where your tomatoes should be!</p>
+                <button class="toggle-button" onclick="toggleInstructions('example11-instructions')">Show Steps</button>
+                <div id="example11-instructions" class="instructions">
+                    <p class="font-semibold text-lg mb-2">Goal: Make a list that people can pick from for plant types.</p>
+                    <ol>
+                        <li><strong>Make a List of Good Plants:</strong>
+                            <ul>
+                                <li>In a different part of your sheet (like in column F), make a list of approved plants:
+                                    <ul>
+                                        <li>F1: "Tomato"</li>
+                                        <li>F2: "Carrot"</li>
+                                        <li>F3: "Lettuce"</li>
+                                        <li>F4: "Sunflower"</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>Apply Data Validation (Set Rules for Data):</strong>
+                            <ul>
+                                <li>Pick the cells where you want to use these rules (like <strong>A2:A10</strong> in a new "Plant Type" column).</li>
+                                <li>Go to the "Data" tab > "Data Validation" (or "Data" > "Data validation" in Google Sheets).</li>
+                                <li>In the "Settings" tab:
+                                    <ul>
+                                        <li>Under "Allow:", choose "List".</li>
+                                        <li>Under "Source:", click the arrow and pick the cells where your list of options is (like <strong>F1:F4</strong>).</li>
+                                    </ul>
+                                </li>
+                                <li>Click "OK".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Test It:</strong> Now, when you click on any cell where you set the rules, you should see a small arrow. Click it to choose from your list of good plants! Try typing something that's not on the list (like "Moon Rock"); Excel should show you an error, keeping your garden perfect!</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-t-2 border-blue-200 my-16">
+
+        <section class="mb-16">
+            <h2 class="section-title">Excel Tips for Working Faster</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card">
+                    <h4 class="example-title text-blue-500">Freeze Panes (Lock Rows/Columns)</h4>
+                    <p class="text-md text-slate-700">When you have a very long list of data, scrolling down can make you lose sight of your column titles. <strong>Freeze Panes</strong> (in the "View" tab > "Freeze Panes") lets you keep certain rows or columns always visible while you scroll through the rest of your data. Super helpful for big tables!</p>
+                </div>
+                <div class="card">
+                    <h4 class="example-title text-blue-500">Absolute References ($) (Locking Cells in Formulas)</h4>
+                    <p class="text-md text-slate-700">When you copy formulas, sometimes you want a cell to stay the same. Use the dollar sign (<strong>$</strong>) before the column letter and/or row number (like <strong>$A$1</strong>). Press <strong>F4</strong> after picking a cell in a formula to change how it's locked (or not locked).</p>
+                </div>
+                <div class="card">
+                    <h4 class="example-title text-blue-500">Text to Columns (Splitting Text)</h4>
+                    <p class="text-md text-slate-700">If you have words in one cell that you want to split into many columns (like "John Doe" into "John" and "Doe"), use <strong>Text to Columns</strong> (in the "Data" tab > "Text to Columns"). You can split by a separator (like a comma or a space) or by a set width.</p>
+                </div>
+                <div class="card">
+                    <h4 class="example-title text-blue-500">Remove Duplicates (Get Rid of Copies)</h4>
+                    <p class="text-md text-slate-700">Tired of having the same things listed twice? Pick your data and use <strong>Remove Duplicates</strong> (in the "Data" tab > "Remove Duplicates") to quickly clean up your list. You can choose which columns to check for copies.</p>
+                </div>
+                <div class="card">
+                    <h4 class="example-title text-blue-500">Flash Fill (Excel 2013+) (Smart Filling)</h4>
+                    <p class="text-md text-slate-700">This amazing tool (in the "Data" tab > "Flash Fill" or press <strong>Ctrl+E</strong>) smartly fills in data based on a pattern you start. For example, if you have a column of full names and you type only the first name in the next column for the first person, Flash Fill can automatically get all the first names for you!</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-t-2 border-blue-200 my-16">
+
+        <section class="mb-16">
+            <h2 class="section-title">Must-Know Excel Shortcuts</h2>
+            <div class="card">
+                <p class="text-md text-slate-700 mb-4">Learning a few quick ways to do things can make you much faster in Excel. Here are some very helpful ones:</p>
+                <ul class="list-disc pl-6 text-md text-slate-700">
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + C</span>: Copy what you've picked.</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + V</span>: Paste what you copied.</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + X</span>: Cut what you've picked (moves it).</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + Z</span>: Undo your last action.</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + Y</span>: Do again what you just undid.</li>
+                    <li class="mb-2"><span class="shortcut-item">F2</span>: Edit the cell you're in.</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + S</span>: Save your work.</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + A</span>: Pick everything on the sheet.</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + B</span>: Make text <strong>bold</strong> or un-bold.</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + I</span>: Make text <em>italic</em> or un-italic.</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + U</span>: Make text <u>underlined</u> or un-underlined.</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + Shift + L</span>: Turn filters on or off for a group of cells.</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + Page Up / Page Down</span>: Switch between your different sheets.</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + Arrow Keys</span>: Jump to the edge of your data.</li>
+                    <li class="mb-2"><span class="shortcut-item">Shift + Arrow Keys</span>: Make your selection bigger by one cell.</li>
+                    <li class="mb-2"><span class="shortcut-item">Ctrl + Shift + Arrow Keys</span>: Make your selection bigger all the way to the last cell with data.</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer class="text-center py-8 text-slate-600 text-sm">
+            <p>&copy; 2025 Spreadsheet Fun. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleInstructions(id) {
+            const element = document.getElementById(id);
+            if (element.style.display === 'block') {
+                element.style.display = 'none';
+            } else {
+                element.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
