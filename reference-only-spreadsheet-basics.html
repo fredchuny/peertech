@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel & Spreadsheet Basics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        .section-title {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700; /* font-bold */
+            color: #1f2937;
+            margin-bottom: 1.5rem; /* mb-6 */
+            text-align: center;
+        }
+        .subsection-title {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 600; /* font-semibold */
+            color: #374151;
+            margin-top: 2.5rem; /* mt-10 */
+            margin-bottom: 1rem; /* mb-4 */
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .interactive-table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .interactive-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px; /* Ensure it's wide enough for content */
+        }
+        .interactive-table th, .interactive-table td {
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            padding: 0.75rem;
+            text-align: left;
+            white-space: nowrap; /* Prevent wrapping in cells */
+        }
+        .interactive-table th {
+            background-color: #f9fafb; /* bg-gray-50 */
+            font-weight: 600;
+        }
+        .interactive-table td input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db; /* border-gray-300 */
+            border-radius: 0.375rem; /* rounded-md */
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .interactive-table td input:focus {
+            border-color: #3b82f6; /* ring-blue-500 */
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); /* ring-2 */
+        }
+        .interactive-table td.total, .interactive-table td.average {
+            font-weight: 600;
+            background-color: #eff6ff; /* bg-blue-50 */
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem; /* rounded-lg */
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #3b82f6; /* blue-500 */
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb; /* blue-600 */
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #6b7280; /* gray-500 */
+            color: #ffffff;
+        }
+        .btn-secondary:hover {
+            background-color: #4b5563; /* gray-600 */
+            transform: translateY(-1px);
+        }
+        .shortcut-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .shortcut-item {
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+        }
+        .shortcut-item strong {
+            color: #1f2937;
+        }
+        .example-list li {
+            margin-bottom: 0.5rem;
+        }
+        .example-list li strong {
+            color: #1f2937;
+        }
+
+        /* Styling for the simulated spreadsheet */
+        .simulated-spreadsheet {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .simulated-spreadsheet th, .simulated-spreadsheet td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .simulated-spreadsheet th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .simulated-spreadsheet td {
+            background-color: #fff;
+        }
+
+        .simulated-spreadsheet input[type="text"] {
+            width: 100%;
+            border: none;
+            padding: 0;
+            text-align: center;
+            background: transparent;
+            outline: none;
+        }
+
+        .simulated-spreadsheet .header-cell {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+
+        .simulated-spreadsheet .bold-text {
+            font-weight: bold;
+        }
+
+        .simulated-spreadsheet .italic-text {
+            font-style: italic;
+        }
+
+        .simulated-spreadsheet .highlight-cell {
+            background-color: yellow;
+        }
+
+        .simulated-spreadsheet .merged-cell {
+            background-color: #e0f2fe; /* light blue */
+        }
+
+        .simulated-spreadsheet .table-header {
+            background-color: #bfdbfe; /* light blue for table headers */
+            font-weight: bold;
+        }
+
+        .simulated-spreadsheet .table-row-odd {
+            background-color: #f0f9ff; /* very light blue for odd rows */
+        }
+
+        .simulated-spreadsheet .table-row-even {
+            background-color: #e0f2fe; /* slightly darker light blue for even rows */
+        }
+
+        .simulated-spreadsheet .autofill-cell {
+            background-color: #dcfce7; /* light green */
+        }
+
+        .simulated-spreadsheet .formula-result {
+            background-color: #fffbeb; /* light yellow */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-8 shadow-md">
+        <div class="container text-center">
+            <h1 class="text-5xl font-extrabold mb-2">Mastering Spreadsheets</h1>
+            <p class="text-xl opacity-90">Practical Basics & Smart Shortcuts</p>
+        </div>
+    </header>
+
+    <main class="container py-12">
+        <section id="introduction" class="card">
+            <h2 class="section-title">Welcome to Your Spreadsheet Journey!</h2>
+            <p class="text-lg leading-relaxed mb-4">
+                Understanding spreadsheets is a valuable skill. This interactive guide is designed to give you hands-on experience with the fundamentals of Excel and other spreadsheet applications. We'll cover everything from basic data entry to powerful formulas, practical tips, and essential shortcuts. Get ready to make data work for you!
+            </p>
+            <p class="text-lg leading-relaxed">
+                Each section below offers explanations and interactive examples for you to try right here in your browser. Feel free to experiment and practice as much as you need.
+            </p>
+        </section>
+
+        <section id="excel-basics" class="card">
+            <h2 class="section-title">Excel Basics: Your First Steps</h2>
+            <p class="text-lg leading-relaxed mb-6">
+                Let's start with the absolute essentials. Think of a spreadsheet as a grid of cells, organized into rows and columns.
+            </p>
+
+            <h3 class="subsection-title">Understanding Cells, Rows, and Columns</h3>
+            <p class="mb-4">
+                Every spreadsheet is made of **cells**, which are the individual boxes where you enter data. Cells are identified by their **column letter** and **row number**. For example, **C5** refers to the cell in Column C and Row 5. **AA3** is in Column AA and Row 3. This naming convention is crucial for formulas!
+            </p>
+            <p class="mb-4">
+                **Why is this important?** When you use formulas, you'll often refer to the data in specific cells. Knowing their names helps you build accurate calculations.
+            </p>
+
+            <div class="interactive-table-container">
+                <table class="simulated-spreadsheet">
+                    <thead>
+                        <tr>
+                            <th class="header-cell"></th>
+                            <th class="header-cell">A</th>
+                            <th class="header-cell">B</th>
+                            <th class="header-cell">C</th>
+                            <th class="header-cell">D</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="header-cell">1</td>
+                            <td><input type="text" value="Item"></td>
+                            <td><input type="text" value="Quantity"></td>
+                            <td><input type="text" value="Price"></td>
+                            <td><input type="text" value="Total"></td>
+                        </tr>
+                        <tr>
+                            <td class="header-cell">2</td>
+                            <td><input type="text" value="Apples"></td>
+                            <td><input type="text" value="10"></td>
+                            <td><input type="text" value="1.50"></td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="header-cell">3</td>
+                            <td><input type="text" value="Bananas"></td>
+                            <td><input type="text" value="5"></td>
+                            <td><input type="text" value="0.75"></td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="header-cell">4</td>
+                            <td><input type="text" value="Oranges"></td>
+                            <td><input type="text" value="8"></td>
+                            <td><input type="text" value="1.20"></td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="header-cell">5</td>
+                            <td colspan="2" class="merged-cell">Grand Total:</td>
+                            <td colspan="2" class="merged-cell formula-result" id="grandTotalCell"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-sm text-gray-600 mt-2">
+                <em>Try typing into the cells above! Notice how they are organized. Cell A1 contains "Item", B2 contains "10", and so on.</em>
+            </p>
+
+            <h3 class="subsection-title">Basic Typing & Formatting</h3>
+            <p class="mb-4">
+                Entering data is as simple as clicking a cell and typing. But to make your data clear and professional, formatting is key!
+            </p>
+            <ul class="list-disc list-inside mb-4">
+                <li><strong>Bold:</strong> Makes text stand out.</li>
+                <li><strong>Italic:</strong> Often used for emphasis.</li>
+                <li><strong>Highlighting:</strong> Changes the cell's background color.</li>
+            </ul>
+
+            <div class="interactive-table-container">
+                <table class="simulated-spreadsheet">
+                    <thead>
+                        <tr>
+                            <th class="header-cell"></th>
+                            <th class="header-cell">A</th>
+                            <th class="header-cell">B</th>
+                            <th class="header-cell">C</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="header-cell">1</td>
+                            <td class="bold-text">Important Note</td>
+                            <td class="italic-text">For Emphasis</td>
+                            <td class="highlight-cell">Highlighted Data</td>
+                        </tr>
+                        <tr>
+                            <td class="header-cell">2</td>
+                            <td><input type="text" value="Type here"></td>
+                            <td><input type="text" value="And here"></td>
+                            <td><input type="text" value="Here too"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-sm text-gray-600 mt-2">
+                <em>Observe the cells in Row 1. The pre-formatted styles are for demonstration purposes. You can apply these styles to any cell using the toolbar in Excel.</em>
+            </p>
+
+            <h3 class="subsection-title">Date Formatting</h3>
+            <p class="mb-4">
+                Dates can be displayed in many ways (e.g., 1/1/2025, Jan 1, 2025, 01-Jan-25). Excel stores dates as numbers, which allows for calculations.
+            </p>
+            <div class="interactive-table-container">
+                <table class="simulated-spreadsheet">
+                    <thead>
+                        <tr>
+                            <th class="header-cell"></th>
+                            <th class="header-cell">A</th>
+                            <th class="header-cell">B</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="header-cell">1</td>
+                            <td><strong>Original Date</strong></td>
+                            <td><strong>Formatted Date</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="header-cell">2</td>
+                            <td><input type="text" value="2025-03-15" id="dateInput"></td>
+                            <td id="formattedDate"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-sm text-gray-600 mt-2">
+                <em>Enter a date in the left cell (e.g., "2025-03-15" or "3/15/2025") and see it formatted.</em>
+            </p>
+
+            <h3 class="subsection-title">Adjusting Column Width & Row Height</h3>
+            <p class="mb-4">
+                Sometimes your text is too long for a cell, or you want more space. You can adjust column width and row height by:
+            </p>
+            <ul class="list-disc list-inside mb-4">
+                <li><strong>Dragging:</strong> Click and drag the boundary between column letters or row numbers.</li>
+                <li><strong>Auto-Adjust:</strong> Double-click the boundary to automatically fit the content.</li>
+                <li><strong>Using Numbers:</strong> Right-click a column/row header and choose "Column Width..." or "Row Height..." to enter a specific number.</li>
+            </ul>
+
+            <h3 class="subsection-title">Merge Cells & Table Styling</h3>
+            <p class="mb-4">
+                <strong>Merge & Center</strong> combines multiple cells into one large cell, often used for titles across columns.
+                <strong>Table Styling</strong> applies pre-designed formats (colors, borders, shading) to make your data look professional and easier to read.
+            </p>
+            <div class="interactive-table-container">
+                <table class="simulated-spreadsheet">
+                    <thead>
+                        <tr>
+                            <th class="header-cell"></th>
+                            <th class="header-cell">A</th>
+                            <th class="header-cell">B</th>
+                            <th class="header-cell">C</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="header-cell">1</td>
+                            <td colspan="3" class="merged-cell"><strong>Report Title (Merged)</strong></td>
+                        </tr>
+                        <tr class="table-header">
+                            <td class="header-cell">2</td>
+                            <td>Category</td>
+                            <td>Value 1</td>
+                            <td>Value 2</td>
+                        </tr>
+                        <tr class="table-row-odd">
+                            <td class="header-cell">3</td>
+                            <td>Alpha</td>
+                            <td>100</td>
+                            <td>250</td>
+                        </tr>
+                        <tr class="table-row-even">
+                            <td class="header-cell">4</td>
+                            <td>Beta</td>
+                            <td>150</td>
+                            <td>300</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-sm text-gray-600 mt-2">
+                <em>Notice the merged title and the alternating row colors from table styling.</em>
+            </p>
+
+            <h3 class="subsection-title">Autofill: Smart Data Entry</h3>
+            <p class="mb-4">
+                Autofill is a huge time-saver! Excel can recognize patterns and fill in data for you.
+            </p>
+            <ul class="list-disc list-inside mb-4">
+                <li>Type "Monday" in a cell, then drag the small square (fill handle) at the bottom-right corner of the cell downwards. Excel will fill "Tuesday", "Wednesday", etc.</li>
+                <li>Type "1" in one cell, "2" in the next, select both, then drag. Excel will continue the number sequence.</li>
+            </ul>
+            <div class="interactive-table-container">
+                <table class="simulated-spreadsheet">
+                    <thead>
+                        <tr>
+                            <th class="header-cell"></th>
+                            <th class="header-cell">A</th>
+                            <th class="header-cell">B</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="header-cell">1</td>
+                            <td><strong>Days</strong></td>
+                            <td><strong>Numbers</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="header-cell">2</td>
+                            <td><input type="text" value="Monday" id="autofillDay"></td>
+                            <td><input type="text" value="1" id="autofillNum1"></td>
+                        </tr>
+                        <tr>
+                            <td class="header-cell">3</td>
+                            <td class="autofill-cell" id="autofillDay2"></td>
+                            <td><input type="text" value="2" id="autofillNum2"></td>
+                        </tr>
+                        <tr>
+                            <td class="header-cell">4</td>
+                            <td class="autofill-cell" id="autofillDay3"></td>
+                            <td class="autofill-cell" id="autofillNum3"></td>
+                        </tr>
+                        <tr>
+                            <td class="header-cell">5</td>
+                            <td class="autofill-cell" id="autofillDay4"></td>
+                            <td class="autofill-cell" id="autofillNum4"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-sm text-gray-600 mt-2">
+                <em>Try changing "Monday" or "1" and see how the autofill cells would change in a real spreadsheet.</em>
+            </p>
+            <button onclick="resetBasicExamples()" class="btn btn-secondary mt-4">Reset Basic Examples</button>
+        </section>
+
+        <section id="formulas" class="card">
+            <h2 class="section-title">Formulas: The Magic of Spreadsheets</h2>
+            <p class="text-lg leading-relaxed mb-6">
+                Formulas are where spreadsheets truly shine! They allow for **accuracy**, **efficiency**, and powerful **data analysis**.
+            </p>
+
+            <h3 class="subsection-title">The Equal Sign: Your Magic Key</h3>
+            <p class="mb-4">
+                The **equal sign (`=`)** is the magic key that tells Excel, "Hey, I'm not just typing text, I want you to calculate something!" Every formula starts with `=`.
+            </p>
+            <p class="mb-4">
+                After the `=`, you can type numbers, cell references (like `B2`), or functions (like `SUM`).
+            </p>
+            <p class="mb-4">
+                **Parentheses `()`** are used to group parts of a formula, just like in math, to ensure calculations happen in the correct order.
+            </p>
+
+            <h3 class="subsection-title">Interactive Example: Coffee Expenses Tracker</h3>
+            <p class="mb-4">
+                Let's build a simple "Coffee Expenses Tracker" together. Follow the steps below, and watch the spreadsheet update!
+            </p>
+
+            <div class="interactive-table-container">
+                <table class="interactive-table" id="coffeeTracker">
+                    <thead>
+                        <tr>
+                            <th></th> <!-- Empty cell for row numbers -->
+                            <th>A</th>
+                            <th>B</th>
+                            <th>C</th>
+                            <th>D</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><input type="text" value="Day" id="coffeeA1" class="bold-text text-center"></td>
+                            <td><input type="text" value="Cost" id="coffeeB1" class="bold-text text-center"></td>
+                            <td><input type="text" value="Number of Coffee" id="coffeeC1" class="bold-text text-center"></td>
+                            <td><input type="text" value="Total Cost" id="coffeeD1" class="bold-text text-center"></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><input type="text" value="Monday" id="coffeeA2" oninput="updateCoffeeTracker()"></td>
+                            <td><input type="number" value="5" id="coffeeB2" oninput="updateCoffeeTracker()"></td>
+                            <td><input type="number" value="3" id="coffeeC2" oninput="updateCoffeeTracker()"></td>
+                            <td id="coffeeD2" class="formula-result"></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><input type="text" value="Tuesday" id="coffeeA3" oninput="updateCoffeeTracker()"></td>
+                            <td><input type="number" value="5" id="coffeeB3" oninput="updateCoffeeTracker()"></td>
+                            <td><input type="number" value="3" id="coffeeC3" oninput="updateCoffeeTracker()"></td>
+                            <td id="coffeeD3" class="formula-result"></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><input type="text" value="Wednesday" id="coffeeA4" oninput="updateCoffeeTracker()"></td>
+                            <td><input type="number" value="7" id="coffeeB4" oninput="updateCoffeeTracker()"></td>
+                            <td><input type="number" value="3" id="coffeeC4" oninput="updateCoffeeTracker()"></td>
+                            <td id="coffeeD4" class="formula-result"></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><input type="text" value="Thursday" id="coffeeA5" oninput="updateCoffeeTracker()"></td>
+                            <td><input type="number" value="5" id="coffeeB5" oninput="updateCoffeeTracker()"></td>
+                            <td><input type="number" value="3" id="coffeeC5" oninput="updateCoffeeTracker()"></td>
+                            <td id="coffeeD5" class="formula-result"></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><input type="text" value="Friday" id="coffeeA6" oninput="updateCoffeeTracker()"></td>
+                            <td><input type="number" value="5" id="coffeeB6" oninput="updateCoffeeTracker()"></td>
+                            <td><input type="number" value="4" id="coffeeC6" oninput="updateCoffeeTracker()"></td>
+                            <td id="coffeeD6" class="formula-result"></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><input type="text" value="Total" id="coffeeA7" class="bold-text"></td>
+                            <td id="coffeeB7" class="total formula-result"></td>
+                            <td></td>
+                            <td id="coffeeD7" class="total formula-result"></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><input type="text" value="Average" id="coffeeA8" class="bold-text"></td>
+                            <td id="coffeeB8" class="average formula-result"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="text-sm text-gray-600 mt-2">
+                <em>Try changing the "Cost" or "Number of Coffee" values (e.g., change B4 to 10) and see how the totals automatically update!</em>
+            </p>
+            <button onclick="resetCoffeeTracker()" class="btn btn-secondary mt-4">Reset Coffee Tracker</button>
+        </section>
+
+        <section id="tips" class="card">
+            <h2 class="section-title">Smart Tips for Spreadsheet Success</h2>
+            <ul class="list-disc list-inside text-lg leading-relaxed space-y-3">
+                <li><strong>Plan Your Layout:</strong> Before typing, think about how your data should be organized. Clear column headers are crucial.</li>
+                <li><strong>Use Tables:</strong> Convert your data range into an official Excel Table (Insert > Table). This makes formatting, filtering, and formula writing much easier.</li>
+                <li><strong>Name Your Ranges:</strong> Instead of `SUM(A1:A10)`, name the range "SalesData" and use `SUM(SalesData)`. It makes formulas much more readable.</li>
+                <li><strong>Data Validation:</strong> Prevent errors by setting rules for what can be entered into a cell (e.g., only numbers, specific items from a list).</li>
+                <li><strong>Conditional Formatting:</strong> Automatically highlight cells based on their values (e.g., red for low stock, green for high sales).</li>
+                <li><strong>Comments:</strong> Add comments to cells to explain complex formulas or important data points.</li>
+                <li><strong>Freeze Panes:</strong> Keep row and column headers visible when you scroll through large datasets (View > Freeze Panes).</li>
+                <li><strong>Practice Regularly:</strong> The more you use spreadsheets, the more intuitive they become.</li>
+            </ul>
+        </section>
+
+        <section id="shortcuts" class="card">
+            <h2 class="section-title">Essential Spreadsheet Shortcuts</h2>
+            <p class="text-lg leading-relaxed mb-6">
+                Save time and boost your efficiency with these widely useful keyboard shortcuts.
+            </p>
+            <div class="shortcut-grid">
+                <div class="shortcut-item">
+                    <strong>Ctrl + C</strong> (Cmd + C on Mac): Copy selected cells.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + V</strong> (Cmd + V on Mac): Paste copied cells.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + X</strong> (Cmd + X on Mac): Cut selected cells.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + Z</strong> (Cmd + Z on Mac): Undo the last action.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + Y</strong> (Cmd + Y on Mac): Redo the last undone action.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + S</strong> (Cmd + S on Mac): Save your workbook.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + B</strong> (Cmd + B on Mac): Bold selected text.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + I</strong> (Cmd + I on Mac): Italicize selected text.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + U</strong> (Cmd + U on Mac): Underline selected text.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + A</strong> (Cmd + A on Mac): Select all cells in the current data region.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + Home</strong> (Fn + Left Arrow on Mac): Go to cell A1.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + End</strong> (Fn + Right Arrow on Mac): Go to the last used cell on the sheet.
+                </div>
+                <div class="shortcut-item">
+                    <strong>F2</strong>: Edit the active cell.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + ;</strong> (Cmd + ; on Mac): Insert current date.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + Shift + ;</strong> (Cmd + Shift + ; on Mac): Insert current time.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + Shift + $</strong> (Cmd + Shift + $ on Mac): Apply Currency format.
+                </div>
+                <div class="shortcut-item">
+                    <strong>Ctrl + Shift + %</strong> (Cmd + Shift + % on Mac): Apply Percentage format.
+                </div>
+            </div>
+        </section>
+
+        <section id="practice-examples" class="card">
+            <h2 class="section-title">Practice Examples: Put Your Skills to the Test!</h2>
+            <p class="text-lg leading-relaxed mb-6">
+                Here are some practical scenarios for you and your clients to practice. Encourage them to try these on their own in Excel or Google Sheets!
+            </p>
+
+            <h3 class="subsection-title">Easy Examples (5+)</h3>
+            <ul class="list-disc list-inside text-lg leading-relaxed example-list space-y-3">
+                <li><strong>Student Grade Book:</strong>
+                    Create a sheet with columns: "Student Name", "Quiz 1 Score", "Quiz 2 Score", "Quiz 3 Score", "Average Score".
+                    Enter 5-7 student names and their scores.
+                    Use the `AVERAGE` formula to calculate each student's average score.
+                    Practice basic formatting (bold headers, center names).
+                </li>
+                <li><strong>Simple Household Budget:</strong>
+                    Set up columns: "Category", "Monthly Income", "Monthly Expense".
+                    List categories like "Salary", "Rent", "Groceries", "Utilities", "Transportation".
+                    Enter sample amounts.
+                    Calculate "Net Savings" using a `SUM` formula for total income and total expenses, then subtract.
+                </li>
+                <li><strong>Basic Inventory List:</strong>
+                    Create columns: "Item Name", "Quantity in Stock", "Unit Price", "Total Value".
+                    List 5-8 items (e.g., "Pens", "Notebooks", "Staplers").
+                    Enter quantities and prices.
+                    Use a multiplication formula (`=B2*C2`) for "Total Value" and autofill.
+                </li>
+                <li><strong>Personal Contact List:</strong>
+                    Columns: "First Name", "Last Name", "Phone Number", "Email Address", "City".
+                    Enter details for 10 mock contacts.
+                    Practice adjusting column widths and applying basic table styling.
+                </li>
+                <li><strong>Daily Task Schedule:</strong>
+                    Columns: "Time", "Task Description", "Priority".
+                    Start with "8:00 AM" and use autofill to list times every hour until "5:00 PM".
+                    Fill in sample tasks.
+                    Practice highlighting high-priority tasks.
+                </li>
+                <li><strong>Recipe Ingredients List:</strong>
+                    Columns: "Ingredient", "Quantity", "Unit".
+                    List ingredients for a simple recipe (e.g., "Flour", "Sugar", "Eggs").
+                    Practice basic typing and ensuring consistent unit formatting (e.g., "cups", "grams").
+                </li>
+            </ul>
+
+            <h3 class="subsection-title">Moderate Examples (2-3)</h3>
+            <ul class="list-disc list-inside text-lg leading-relaxed example-list space-y-3">
+                <li><strong>Quarterly Sales Data Analysis:</strong>
+                    Columns: "Product", "Q1 Sales", "Q2 Sales", "Q3 Sales", "Q4 Sales", "Annual Total", "Highest Quarter", "Lowest Quarter".
+                    Enter data for 5-7 products.
+                    Calculate "Annual Total" using `SUM`.
+                    Use `MAX` and `MIN` formulas to find the highest and lowest sales quarters for each product.
+                    Apply conditional formatting to highlight products with "Annual Total" above a certain target.
+                </li>
+                <li><strong>Employee Attendance Tracker:</strong>
+                    Columns: "Employee Name", "Jan Days Present", "Feb Days Present", "Mar Days Present", "Total Days Present", "Attendance Rate (%)".
+                    Enter data for 5 employees.
+                    Calculate "Total Days Present" using `SUM`.
+                    Calculate "Attendance Rate" as `(Total Days Present / Total Possible Days) * 100`.
+                    Use conditional formatting to color-code attendance rates (e.g., green for >90%, yellow for 80-90%, red for <80%).
+                </li>
+            </ul>
+
+            <h3 class="subsection-title">Difficult Examples (2-3)</h3>
+            <ul class="list-disc list-inside text-lg leading-relaxed example-list space-y-3">
+                <li><strong>Simple Loan Amortization Schedule:</strong>
+                    This is more advanced and involves financial functions.
+                    Create input cells for "Loan Amount", "Annual Interest Rate", "Loan Term (Years)".
+                    Then create columns for "Payment Number", "Beginning Balance", "Interest Payment", "Principal Payment", "Ending Balance".
+                    Calculate monthly payment using a financial function (e.g., `PMT` in Excel).
+                    Then, for each payment number, calculate interest and principal portions, and the new ending balance. This demonstrates how formulas can build upon each other.
+                </li>
+                <li><strong>Basic Data Validation & Dropdowns:</strong>
+                    Create a simple order form.
+                    Have a column for "Product". Instead of typing, set up data validation to create a dropdown list of pre-defined products (e.g., "Laptop", "Monitor", "Keyboard").
+                    Have a column for "Quantity". Set data validation to only allow whole numbers between 1 and 10.
+                    This teaches how to control data entry for accuracy.
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container text-center">
+            <p>&copy; 2025 Spreadsheet Savvy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- JavaScript for Interactive Examples ---
+
+        // Function to update the formatted date cell
+        document.getElementById('dateInput').addEventListener('input', function() {
+            const dateInput = this.value;
+            const formattedDateCell = document.getElementById('formattedDate');
+            try {
+                const date = new Date(dateInput);
+                if (!isNaN(date.getTime())) {
+                    formattedDateCell.textContent = date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                } else {
+                    formattedDateCell.textContent = 'Invalid Date';
+                }
+            } catch (e) {
+                formattedDateCell.textContent = 'Invalid Date';
+            }
+        });
+
+        // Function to simulate autofill for days and numbers
+        function simulateAutofill() {
+            const dayInput = document.getElementById('autofillDay').value.toLowerCase();
+            const num1Input = parseInt(document.getElementById('autofillNum1').value);
+            const num2Input = parseInt(document.getElementById('autofillNum2').value);
+
+            const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+            const startIndex = days.indexOf(dayInput);
+
+            if (startIndex !== -1) {
+                document.getElementById('autofillDay2').textContent = days[(startIndex + 1) % 7];
+                document.getElementById('autofillDay3').textContent = days[(startIndex + 2) % 7];
+                document.getElementById('autofillDay4').textContent = days[(startIndex + 3) % 7];
+            } else {
+                document.getElementById('autofillDay2').textContent = '';
+                document.getElementById('autofillDay3').textContent = '';
+                document.getElementById('autofillDay4').textContent = '';
+            }
+
+            if (!isNaN(num1Input) && !isNaN(num2Input) && num2Input === num1Input + 1) {
+                document.getElementById('autofillNum3').textContent = num2Input + 1;
+                document.getElementById('autofillNum4').textContent = num2Input + 2;
+            } else {
+                document.getElementById('autofillNum3').textContent = '';
+                document.getElementById('autofillNum4').textContent = '';
+            }
+        }
+
+        document.getElementById('autofillDay').addEventListener('input', simulateAutofill);
+        document.getElementById('autofillNum1').addEventListener('input', simulateAutofill);
+        document.getElementById('autofillNum2').addEventListener('input', simulateAutofill);
+
+        // Initial call for autofill simulation
+        simulateAutofill();
+
+        // Function to reset basic examples
+        function resetBasicExamples() {
+            // Reset simulated spreadsheet inputs
+            document.querySelector('.simulated-spreadsheet tbody tr:nth-child(2) td:nth-child(2) input').value = 'Type here';
+            document.querySelector('.simulated-spreadsheet tbody tr:nth-child(2) td:nth-child(3) input').value = 'And here';
+            document.querySelector('.simulated-spreadsheet tbody tr:nth-child(2) td:nth-child(4) input').value = 'Here too';
+
+            // Reset date input
+            document.getElementById('dateInput').value = '2025-03-15';
+            document.getElementById('formattedDate').textContent = new Date('2025-03-15').toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Reset autofill inputs
+            document.getElementById('autofillDay').value = 'Monday';
+            document.getElementById('autofillNum1').value = '1';
+            document.getElementById('autofillNum2').value = '2';
+            simulateAutofill(); // Recalculate autofill display
+        }
+
+        // --- Coffee Tracker Logic ---
+        function updateCoffeeTracker() {
+            let totalCostSum = 0;
+            let totalAverageDivisor = 0; // For average of B column
+            let sumOfB = 0;
+
+            for (let i = 2; i <= 6; i++) {
+                const cost = parseFloat(document.getElementById(`coffeeB${i}`).value) || 0;
+                const numCoffee = parseFloat(document.getElementById(`coffeeC${i}`).value) || 0;
+
+                // Calculate D column: Cost * Number of Coffee
+                const totalDailyCost = cost * numCoffee;
+                document.getElementById(`coffeeD${i}`).textContent = totalDailyCost.toFixed(2);
+                totalCostSum += totalDailyCost; // Sum for D7
+
+                sumOfB += cost; // Sum for B7
+                totalAverageDivisor++; // Count for B8
+            }
+
+            // Update B7 (SUM of Cost column)
+            document.getElementById('coffeeB7').textContent = sumOfB.toFixed(2);
+
+            // Update B8 (AVERAGE of Cost column)
+            const averageB = totalAverageDivisor > 0 ? sumOfB / totalAverageDivisor : 0;
+            document.getElementById('coffeeB8').textContent = averageB.toFixed(2);
+
+            // Update D7 (SUM of Total Cost column)
+            document.getElementById('coffeeD7').textContent = totalCostSum.toFixed(2);
+        }
+
+        function resetCoffeeTracker() {
+            document.getElementById('coffeeA2').value = 'Monday';
+            document.getElementById('coffeeB2').value = '5';
+            document.getElementById('coffeeC2').value = '3';
+
+            document.getElementById('coffeeA3').value = 'Tuesday';
+            document.getElementById('coffeeB3').value = '5';
+            document.getElementById('coffeeC3').value = '3';
+
+            document.getElementById('coffeeA4').value = 'Wednesday';
+            document.getElementById('coffeeB4').value = '7';
+            document.getElementById('coffeeC4').value = '3';
+
+            document.getElementById('coffeeA5').value = 'Thursday';
+            document.getElementById('coffeeB5').value = '5';
+            document.getElementById('coffeeC5').value = '3';
+
+            document.getElementById('coffeeA6').value = 'Friday';
+            document.getElementById('coffeeB6').value = '5';
+            document.getElementById('coffeeC6').value = '4';
+
+            updateCoffeeTracker(); // Recalculate totals
+        }
+
+        // Initial update for coffee tracker on page load
+        window.onload = function() {
+            updateCoffeeTracker();
+            simulateAutofill(); // Ensure autofill is also initialized
+        };
+    </script>
+</body>
+</html>
