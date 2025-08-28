@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI for Everyday Life: Your Personalized Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Calm Neutrals - Slate, Sky Blue, White, and a warm accent -->
+    <!-- Application Structure Plan: A tab-based Single Page Application (SPA) to separate the core concepts. The main navigation switches between two views: "Prompting Tips" and "Everyday Uses". This structure is chosen for usability, allowing the user to focus on one area at a time without excessive scrolling. "Prompting Tips" uses an interactive card grid to present information in bite-sized, clickable chunks, with a new step-by-step reveal for examples. "Everyday Uses" employs an accordion layout to keep the interface clean, with mock chat interfaces to simulate real-world application and enhance practical learning. The final "Your AI Journey: Important Considerations" section also uses interactive cards with revealable examples for reinforcement, where the initial question remains visible after the answer is revealed. This design transforms the linear document into an exploratory, hands-on tool. -->
+    <!-- Visualization & Content Choices: The source report is a textual guide, so no data charts are needed. The primary goal is to make text-based concepts interactive. Info -> Goal -> Method -> Interaction -> Justification. | Tip 1-4 -> Teach prompting -> Interactive Cards with step-by-step example reveal -> Click to reveal details, then click button to reveal refined example (initial prompt remains visible) -> Encourages guided exploration and breaks down information into manageable parts, simulating a live thought process. | Application Areas 1-3 -> Demonstrate practical use -> Accordion with Mock Chat -> Click to expand, type in mock input -> Simulates real AI tool usage, making abstract examples tangible and memorable. | Important Considerations 1-3 -> Reinforce responsible use -> Interactive Cards with step-by-step example reveal -> Click to reveal initial thought prompt, then click button to reveal clarifying explanation (initial question remains visible) -> Ensures key safety and ethical points are understood through concrete scenarios and active thinking. | Icons -> Add visual cues -> Unicode characters (e.g., 💡, ✍️) -> No interaction needed -> Lightweight, no-dependency way to add visual appeal and context without using SVG or image files. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-active {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-5xl font-bold text-slate-900 mb-2">AI for Everyday Life</h1>
+            <p class="text-lg md:text-xl text-slate-600">Your Personalized Interactive Guide</p>
+        </header>
+
+        <main>
+            <div class="bg-white p-6 rounded-2xl shadow-lg">
+                <div class="mb-8 border-b border-slate-200">
+                    <nav class="flex flex-col sm:flex-row -mb-px">
+                        <button id="tab-tips" class="flex-1 text-slate-500 py-4 px-1 border-b-2 border-transparent text-center text-lg hover:text-blue-500 transition-colors duration-200 tab-active">
+                            🚀 Mastering Prompt Tips
+                        </button>
+                        <button id="tab-uses" class="flex-1 text-slate-500 py-4 px-1 border-b-2 border-transparent text-center text-lg hover:text-blue-500 transition-colors duration-200">
+                            💡 Everyday Uses
+                        </button>
+                    </nav>
+                </div>
+
+                <div id="content-tips">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-bold text-slate-800">Core Prompting Techniques</h2>
+                        <p class="text-slate-500 mt-1">Learn the principles of talking to AI effectively. Click on a tip to learn more.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <div class="tip-card bg-slate-50 rounded-xl p-6 cursor-pointer hover:shadow-md hover:bg-slate-100 transition-all duration-200">
+                            <h3 class="text-xl font-semibold text-slate-900 mb-2">1. Be Clear & Specific</h3>
+                            <p class="text-slate-600">Give detailed instructions to get tailored results.</p>
+                            <div class="tip-details hidden mt-4 pt-4 border-t border-slate-200">
+                                <p class="font-semibold mb-2">Example:</p>
+                                <div class="mock-chat">
+                                    <div class="prompt bg-blue-100 text-blue-800 p-3 rounded-lg mb-2 initial-example"><strong>Vague:</strong> "Write a story."</div>
+                                    <button class="show-better-example-btn bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 hover:bg-blue-600 transition-colors duration-200">Show Better Example</button>
+                                    <div class="prompt bg-green-100 text-green-800 p-3 rounded-lg mt-2 better-example hidden"><strong>Specific:</strong> "Write a 3-paragraph short story about a brave squirrel finding a special nut, from the squirrel's perspective, set in a cozy park."</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tip-card bg-slate-50 rounded-xl p-6 cursor-pointer hover:shadow-md hover:bg-slate-100 transition-all duration-200">
+                            <h3 class="text-xl font-semibold text-slate-900 mb-2">2. Give Context & Role</h3>
+                            <p class="text-slate-600">Tell the AI who to be to shape its tone and knowledge.</p>
+                             <div class="tip-details hidden mt-4 pt-4 border-t border-slate-200">
+                                <p class="font-semibold mb-2">Example:</p>
+                                <div class="mock-chat">
+                                    <div class="prompt bg-blue-100 text-blue-800 p-3 rounded-lg mb-2 initial-example"><strong>No Role:</strong> "Give me advice on saving money."</div>
+                                    <button class="show-better-example-btn bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 hover:bg-blue-600 transition-colors duration-200">Show Better Example</button>
+                                    <div class="prompt bg-green-100 text-green-800 p-3 rounded-lg mt-2 better-example hidden"><strong>With Role:</strong> "You are a financial advisor for young adults. Give me 3 practical tips for saving money on a tight budget."</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tip-card bg-slate-50 rounded-xl p-6 cursor-pointer hover:shadow-md hover:bg-slate-100 transition-all duration-200">
+                            <h3 class="text-xl font-semibold text-slate-900 mb-2">3. Specify Format & Length</h3>
+                            <p class="text-slate-600">Ask for the answer in the exact format you need.</p>
+                             <div class="tip-details hidden mt-4 pt-4 border-t border-slate-200">
+                                <p class="font-semibold mb-2">Example:</p>
+                                <div class="mock-chat">
+                                    <div class="prompt bg-blue-100 text-blue-800 p-3 rounded-lg mb-2 initial-example"><strong>No Format:</strong> "Summarize the benefits of exercise."</div>
+                                    <button class="show-better-example-btn bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 hover:bg-blue-600 transition-colors duration-200">Show Better Example</button>
+                                    <div class="prompt bg-green-100 text-green-800 p-3 rounded-lg mt-2 better-example hidden"><strong>Formatted:</strong> "Summarize the top 5 benefits of exercise in bullet points, each under 10 words."</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tip-card bg-slate-50 rounded-xl p-6 cursor-pointer hover:shadow-md hover:bg-slate-100 transition-all duration-200">
+                            <h3 class="text-xl font-semibold text-slate-900 mb-2">4. Iterate & Refine</h3>
+                            <p class="text-slate-600">Treat it like a conversation and ask follow-up questions.</p>
+                             <div class="tip-details hidden mt-4 pt-4 border-t border-slate-200">
+                                <p class="font-semibold mb-2">Example:</p>
+                                <div class="mock-chat">
+                                     <div class="prompt bg-blue-100 text-blue-800 p-3 rounded-lg mb-2 initial-example"><strong>Initial:</strong> "Write a polite text to cancel coffee."</div>
+                                    <button class="show-better-example-btn bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 hover:bg-blue-600 transition-colors duration-200">Show Better Example</button>
+                                    <div class="prompt bg-green-100 text-green-800 p-3 rounded-lg mt-2 better-example hidden"><strong>Refinement:</strong> "That's good. Now make it sound more enthusiastic about rescheduling."</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-uses" class="hidden">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-bold text-slate-800">Practical Application Areas</h2>
+                        <p class="text-slate-500 mt-1">Explore how AI can help in different parts of your life.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="accordion-item border border-slate-200 rounded-lg">
+                            <button class="accordion-header w-full flex justify-between items-center p-5 text-left">
+                                <span class="text-xl font-semibold text-slate-800">✍️ Personal Productivity & Organization</span>
+                                <span class="accordion-icon text-2xl text-slate-500 transform transition-transform duration-300">+</span>
+                            </button>
+                            <div class="accordion-content hidden p-5 pt-0">
+                                <p class="text-slate-600 mb-4">AI can help you manage your time, plan tasks, and organize information. Think of it as a super-efficient personal assistant for your daily life.</p>
+                                <div class="mock-chat-area bg-slate-50 p-4 rounded-lg">
+                                    <p class="font-semibold mb-2">Try this prompt:</p>
+                                    <div class="prompt bg-blue-100 text-blue-800 p-3 rounded-lg mb-3">"Generate a daily to-do list for someone working from home, including tasks for work, household chores, and a short break. Organize it by time blocks."</div>
+                                    <p class="font-semibold mb-2">Or this one:</p>
+                                    <div class="prompt bg-blue-100 text-blue-800 p-3 rounded-lg">"Help me decide between making pasta or ordering pizza for dinner tonight. List 3 pros and 3 cons for each."</div>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="accordion-item border border-slate-200 rounded-lg">
+                            <button class="accordion-header w-full flex justify-between items-center p-5 text-left">
+                                <span class="text-xl font-semibold text-slate-800">💬 Communication & Writing</span>
+                                <span class="accordion-icon text-2xl text-slate-500 transform transition-transform duration-300">+</span>
+                            </button>
+                            <div class="accordion-content hidden p-5 pt-0">
+                                <p class="text-slate-600 mb-4">Beyond just drafting, AI can help you brainstorm communication strategies, overcome writer's block, or adapt your tone for any situation.</p>
+                                <div class="mock-chat-area bg-slate-50 p-4 rounded-lg">
+                                    <p class="font-semibold mb-2">Try this prompt for a tricky message:</p>
+                                    <div class="prompt bg-blue-100 text-blue-800 p-3 rounded-lg mb-3">"Write a polite text message to my friend canceling our coffee plans for tomorrow, but suggest rescheduling for next week."</div>
+                                    <p class="font-semibold mb-2">Or for a creative spark:</p>
+                                    <div class="prompt bg-blue-100 text-blue-800 p-3 rounded-lg">"Write a fun and quirky birthday message for a friend who loves cats and reading."</div>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="accordion-item border border-slate-200 rounded-lg">
+                            <button class="accordion-header w-full flex justify-between items-center p-5 text-left">
+                                <span class="text-xl font-semibold text-slate-800">🧠 Learning & Information</span>
+                                <span class="accordion-icon text-2xl text-slate-500 transform transition-transform duration-300">+</span>
+                            </button>
+                            <div class="accordion-content hidden p-5 pt-0">
+                                <p class="text-slate-600 mb-4">AI is like a personal tutor or a super-fast research assistant. It can explain complex topics simply, summarize long texts, or give you quick facts.</p>
+                                <div class="mock-chat-area bg-slate-50 p-4 rounded-lg">
+                                    <p class="font-semibold mb-2">Try this prompt:</p>
+                                    <div class="prompt bg-blue-100 text-blue-800 p-3 rounded-lg">"Explain the concept of 'supply and demand' in simple terms, like you're talking to a curious 10-year-old."</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <footer class="text-center mt-8 md:mt-12">
+                 <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Your AI Journey: Important Considerations</h3>
+                    <p class="text-slate-500 mt-1 mb-6">Key points to keep in mind as you integrate AI into your daily life.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                        <div class="tip-card bg-amber-50 rounded-xl p-6 cursor-pointer hover:shadow-md hover:bg-amber-100 transition-all duration-200">
+                            <h4 class="font-semibold text-amber-800 mb-2">🤖 AI is a Tool, Not a Human</h4>
+                            <div class="tip-details">
+                                <p class="text-amber-700 text-sm mb-2 initial-example">Before you use AI, how do you think it 'learns' or 'thinks'?</p>
+                                <button class="show-better-example-btn bg-amber-600 text-white px-4 py-2 rounded-lg mt-2 hover:bg-amber-700 transition-colors duration-200">Reveal Insight</button>
+                                <p class="text-amber-700 text-sm mt-2 better-example hidden">AI doesn't 'think' or 'feel' like a human. It's a powerful tool that uses patterns from vast amounts of data to generate responses. You're the director, not just the audience.</p>
+                            </div>
+                        </div>
+                        <div class="tip-card bg-rose-50 rounded-xl p-6 cursor-pointer hover:shadow-md hover:bg-rose-100 transition-all duration-200">
+                            <h4 class="font-semibold text-rose-800 mb-2">✔️ Fact-Check Everything</h4>
+                            <div class="tip-details">
+                                <p class="text-rose-700 text-sm mb-2 initial-example">AI can sound very confident, even when it's wrong. Can you think of a situation where trusting AI without verifying could lead to a problem?</p>
+                                <button class="show-better-example-btn bg-rose-600 text-white px-4 py-2 rounded-lg mt-2 hover:bg-rose-700 transition-colors duration-200">Reveal Insight</button>
+                                <p class="text-rose-700 text-sm mt-2 better-example hidden">Always verify critical information, especially for important decisions, health, or financial advice. AI can sometimes 'hallucinate' or provide incorrect details that sound convincing.</p>
+                            </div>
+                        </div>
+                        <div class="tip-card bg-sky-50 rounded-xl p-6 cursor-pointer hover:shadow-md hover:bg-sky-100 transition-all duration-200">
+                            <h4 class="font-semibold text-sky-800 mb-2">🔒 Prioritize Privacy</h4>
+                            <div class="tip-details">
+                                <p class="text-sky-700 text-sm mb-2 initial-example">What kind of information should you avoid putting into a public AI tool?</p>
+                                <button class="show-better-example-btn bg-sky-600 text-white px-4 py-2 rounded-lg mt-2 hover:bg-sky-700 transition-colors duration-200">Reveal Insight</button>
+                                <p class="text-sky-700 text-sm mt-2 better-example hidden">Never share sensitive personal details (like your full address, bank details, or confidential work documents) with public AI tools. Treat it like a public forum where anything you type could be seen or used.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        const tabTips = document.getElementById('tab-tips');
+        const tabUses = document.getElementById('tab-uses');
+        const contentTips = document.getElementById('content-tips');
+        const contentUses = document.getElementById('content-uses');
+        const allInteractiveCards = document.querySelectorAll('.tip-card'); // Select all cards for interaction
+        const accordionItems = document.querySelectorAll('.accordion-item');
+
+        function switchTab(activeTab, inactiveTab, activeContent, inactiveContent) {
+            activeTab.classList.add('tab-active');
+            inactiveTab.classList.remove('tab-active');
+            activeContent.classList.remove('hidden');
+            inactiveContent.classList.add('hidden');
+        }
+
+        tabTips.addEventListener('click', () => {
+            switchTab(tabTips, tabUses, contentTips, contentUses);
+        });
+
+        tabUses.addEventListener('click', () => {
+            switchTab(tabUses, tabTips, contentUses, contentTips);
+        });
+        
+        allInteractiveCards.forEach(card => {
+            card.addEventListener('click', (event) => {
+                // If the click was directly on the button, let the button's handler manage it
+                if (event.target.classList.contains('show-better-example-btn')) {
+                    return; 
+                }
+
+                const details = card.querySelector('.tip-details');
+                const betterExample = card.querySelector('.better-example');
+                const showBetterExampleBtn = card.querySelector('.show-better-example-btn');
+
+                // For the main prompt tips, toggle the entire details block
+                if (details) {
+                    details.classList.toggle('hidden');
+                    if (!details.classList.contains('hidden')) {
+                        // Reset state when details are shown (only hide better example and show button)
+                        if (betterExample) betterExample.classList.add('hidden');
+                        if (showBetterExampleBtn) showBetterExampleBtn.classList.remove('hidden');
+                    }
+                } else {
+                    // For footer cards (which don't have a .tip-details wrapper for the content),
+                    // directly toggle the visibility of the better example and button
+                    // The initial example (question) is designed to stay visible.
+                    if (betterExample) betterExample.classList.toggle('hidden');
+                    if (showBetterExampleBtn) showBetterExampleBtn.classList.toggle('hidden');
+                }
+            });
+
+            // Add listener for the "Show Better Example" button within each card
+            const showBetterExampleBtn = card.querySelector('.show-better-example-btn');
+            if (showBetterExampleBtn) { 
+                showBetterExampleBtn.addEventListener('click', (event) => {
+                    event.stopPropagation(); // Prevent the card click from re-toggling details
+                    const betterExample = card.querySelector('.better-example');
+                    if (betterExample) betterExample.classList.remove('hidden');
+                    showBetterExampleBtn.classList.add('hidden'); // Hide the button after click
+                });
+            }
+        });
+
+
+        accordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            const content = item.querySelector('.accordion-content');
+            const icon = item.querySelector('.accordion-icon');
+
+            header.addEventListener('click', () => {
+                const isHidden = content.classList.contains('hidden');
+                
+                content.classList.toggle('hidden');
+                
+                if (isHidden) {
+                    icon.textContent = '-';
+                    icon.classList.add('rotate-180');
+                } else {
+                    icon.textContent = '+';
+                    icon.classList.remove('rotate-180');
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
