@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Data Dealer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+        .data-card {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        .data-card.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .example-content {
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .example-content.open {
+            max-height: 500px; /* Adjusted to fit content */
+            opacity: 1;
+        }
+        .card-description-content {
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .card-description-content.open {
+            max-height: 200px; /* Adjust as needed */
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen flex items-center justify-center">
+
+<div class="max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+    <header class="bg-gradient-to-r from-teal-500 to-green-600 text-white p-6 md:p-8 text-center rounded-t-2xl">
+        <h1 class="text-3xl md:text-4xl font-bold mb-2">The Data Dealer</h1>
+        <p class="text-lg md:text-xl font-light">What is your privacy worth?</p>
+    </header>
+
+    <main class="p-6 md:p-8">
+
+        <!-- Intro Section -->
+        <section id="intro-section" class="text-center">
+            <p class="text-gray-700 mb-6 leading-relaxed">
+                Welcome to "The Data Dealer." In this game, you will act as a data broker, selling your personal information to a large AI company. Each piece of data has a different value. Your goal is to see how many points you can get, but you have to decide what your privacy is worth.
+            </p>
+            <button id="start-button" onclick="startGame()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-md">Start Selling</button>
+        </section>
+
+        <!-- Game Section -->
+        <section id="game-section" class="hidden text-center">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Your Score: <span id="current-score" class="text-green-600 font-bold">0</span></h2>
+            
+            <div id="data-card-container" class="data-card bg-gray-50 p-6 rounded-2xl shadow-lg border border-gray-200">
+                <h3 id="card-name" class="text-2xl font-bold mb-2 text-gray-800"></h3>
+                <p id="card-description" class="text-gray-600 mb-4 hidden"></p>
+                <div class="text-4xl font-extrabold text-purple-600 mb-8" id="card-points"></div>
+                <div class="flex space-x-4 justify-center">
+                    <button id="sell-button" onclick="sellData()" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 shadow-md">
+                        Sell Data
+                    </button>
+                    <button id="dont-sell-button" onclick="dontSellData()" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 shadow-md">
+                        Don't Sell
+                    </button>
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-section" class="hidden text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-green-600 mb-4">Your Scorecard</h2>
+            <p class="text-gray-700 text-lg mb-6">
+                You sold your data for a total of <span id="final-score" class="text-green-600 font-bold text-2xl"></span> points.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left mb-10">
+                <!-- Sold Data List -->
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Data You SOLD:</h3>
+                    <div class="bg-gray-100 p-4 rounded-xl shadow-inner min-h-[100px]">
+                        <ul id="sold-data-list" class="space-y-2">
+                            <!-- Sold data points will be dynamically inserted here -->
+                        </ul>
+                        <p id="sold-placeholder" class="text-gray-400 italic text-sm mt-2 hidden">No data was sold.</p>
+                    </div>
+                </div>
+                
+                <!-- Unsold Data List -->
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Data You KEPT:</h3>
+                    <div class="bg-gray-100 p-4 rounded-xl shadow-inner min-h-[100px]">
+                        <ul id="unsold-data-list" class="space-y-2">
+                            <!-- Unsold data points will be dynamically inserted here -->
+                        </ul>
+                        <p id="unsold-placeholder" class="text-gray-400 italic text-sm mt-2 hidden">All data was sold.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="resetGame()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-md mt-6">
+                Reset Game
+            </button>
+
+
+            <!-- Discussion Questions -->
+            <div class="text-left mt-6">
+                <h3 class="text-2xl font-bold text-blue-800 mb-4">Discussion Questions</h3>
+                <p class="text-gray-700 mb-4">Use these questions to begin your coaching conversation and help the participant understand their choices and the real-world implications.</p>
+                <div class="bg-blue-50 p-6 rounded-xl border-l-4 border-blue-400">
+                    <ul class="list-disc list-inside space-y-3 text-gray-800">
+                        <li><span class="font-bold">Initial Reactions:</span> Which data point was the hardest for you to make a decision on? Why was it so difficult?</li>
+                        <li><span class="font-bold">Value and Risk:</span> Do you think the point values on these cards were fair? If not, which ones would you change and why?</li>
+                        <li><span class="font-bold">The Big Picture:</span> We just played a game where you had to make conscious choices about your data. In the real world, how often do you think you make these choices without even realizing it?</li>
+                        <li><span class="font-bold">Looking Ahead:</span> Based on what you learned, what's one piece of advice you'd give to a friend about protecting their privacy in the age of AI?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- New Section for Applying Privacy in AI -->
+            <div class="text-left mt-10">
+                <h3 class="text-2xl font-bold text-purple-800 mb-4">Applying Privacy in AI</h3>
+                <p class="text-gray-700 mb-4">The game showed us how valuable your data is. Here are some questions to help you think about how to apply this to your daily interactions with AI.</p>
+                <div class="bg-purple-50 p-6 rounded-xl border-l-4 border-purple-400">
+                    <ul class="list-none space-y-6 text-gray-800">
+                        <li id="point-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold">Rephrasing Prompts:</span> If you want to ask an AI about a personal issue, what is one way you could change the prompt to be more private?
+                                <button onclick="toggleExample(0)" class="text-sm font-semibold text-purple-600 hover:text-purple-800 transition-colors duration-200">
+                                    Show Example
+                                </button>
+                            </div>
+                            <div id="example-1" class="example-content mt-2 text-gray-600 italic pl-4">
+                                <p class="mb-2"><strong>Risky Prompt:</strong> "My startup, Acme Corp, is in a new funding round. My co-founder Jane and I are trying to figure out the right valuation. What's a good approach?"</p>
+                                <button onclick="toggleRephrasingSolution()" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-xl transition-all duration-300">
+                                    See Solution
+                                </button>
+                                <div id="rephrase-solution" class="mt-4 hidden">
+                                    <p><strong>Privacy-First Prompt:</strong> "I'm working with a small team on a new business venture. We're looking for guidance on a good valuation approach during a funding round. What are some key factors to consider?"</p>
+                                    <p class="mt-2">By removing specific names and the company name, you still get a helpful response without giving away sensitive business information.</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="point-2">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold">The "Need-to-Know" Principle:</span> Which of the following facts are necessary for the AI to answer the prompt below?
+                                <button onclick="toggleExample(1)" class="text-sm font-semibold text-purple-600 hover:text-purple-800 transition-colors duration-200">
+                                    Show Activity
+                                </button>
+                            </div>
+                            <div id="example-2" class="example-content mt-2 text-gray-600 italic pl-4">
+                                <p class="mb-4"><strong>Prompt:</strong> "I'm looking for a vegetarian recipe that is high in protein and can be cooked in less than 30 minutes. What are some suggestions?"</p>
+                                <div class="bg-white p-4 rounded-lg shadow-inner">
+                                    <p class="font-bold text-gray-800 mb-2">Select the facts needed to answer this prompt:</p>
+                                    <div class="space-y-2 text-gray-700">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="fact1" value="A" class="form-checkbox text-blue-500">
+                                            <span class="ml-2">My last meal was pizza.</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="fact2" value="B" class="form-checkbox text-blue-500">
+                                            <span class="ml-2">I have a friend coming over for dinner.</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="fact3" value="C" class="form-checkbox text-blue-500">
+                                            <span class="ml-2">The meal needs to be vegetarian.</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="fact4" value="D" class="form-checkbox text-blue-500">
+                                            <span class="ml-2">The meal needs to be high in protein.</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="fact5" value="E" class="form-checkbox text-blue-500">
+                                            <span class="ml-2">My dog's name is Charlie.</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="fact6" value="F" class="form-checkbox text-blue-500">
+                                            <span class="ml-2">The meal needs to be ready in under 30 minutes.</span>
+                                        </label>
+                                    </div>
+                                    <button onclick="checkNeedToKnow()" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-xl transition-all duration-300">
+                                        Check Answer
+                                    </button>
+                                </div>
+                                <div id="need-to-know-feedback" class="mt-4 p-4 rounded-xl text-left hidden"></div>
+                            </div>
+                        </li>
+                        <li id="point-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold">The Data Trail:</span> What kind of data is a text-to-image AI tool collecting when you use it?
+                                <button onclick="toggleExample(2)" class="text-sm font-semibold text-purple-600 hover:text-purple-800 transition-colors duration-200">
+                                    Show Activity
+                                </button>
+                            </div>
+                            <div id="example-3" class="example-content mt-2 text-gray-600 italic pl-4">
+                                <div class="bg-white p-4 rounded-lg shadow-inner">
+                                    <p class="font-bold text-gray-800 mb-2">Select the data points an image AI would need:</p>
+                                    <div class="space-y-2 text-gray-700">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="trail-option-1" value="A" class="form-checkbox text-blue-500">
+                                            <span class="ml-2">Your favorite music genre.</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="trail-option-2" value="B" class="form-checkbox text-blue-500">
+                                            <span class="ml-2">The prompt you typed in.</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="trail-option-3" value="C" class="form-checkbox text-blue-500">
+                                            <span class="ml-2">The image the AI generated.</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="trail-option-4" value="D" class="form-checkbox text-blue-500">
+                                            <span class="ml-2">Your home address.</span>
+                                        </label>
+                                    </div>
+                                    <button onclick="checkDataTrail()" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-xl transition-all duration-300">
+                                        Check Answer
+                                    </button>
+                                </div>
+                                <div id="data-trail-feedback" class="mt-4 p-4 rounded-xl text-left hidden"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-200 text-gray-600 p-4 text-center text-sm rounded-b-2xl">
+        Built for AI coaching.
+    </footer>
+</div>
+
+<script>
+    // Game state variables
+    let totalPoints = 0;
+    let soldData = [];
+    let unsoldData = [];
+    let currentCardIndex = 0;
+    const dataCards = [
+        { name: "Your Favorite Color", points: 1, description: "This is a simple fact that doesn't reveal much about you. It's the cheapest item on our list." },
+        { name: "Your Birth Month", points: 2, description: "This provides some demographic context, which is slightly more valuable than a simple preference." },
+        { name: "Your Favorite Restaurant", points: 3, description: "This is a key data point for advertisers. It's a goldmine for targeted food and dining ads." },
+        { name: "Your Last Consumed Book or Movie", points: 5, description: "This reveals your interests and content consumption patterns. AI models can use this to predict what content you'll like next." },
+        { name: "The Last Photo You Took", points: 10, description: "Visual data is incredibly rich. This image can reveal your location, the objects around you, and even the time of day." },
+        { name: "A 5-sentence Summary of Your Last Private Conversation", points: 25, description: "This is highly personal and provides valuable insight into your relationships, thoughts, and feelings. This is a very sensitive data point." },
+        { name: "A 30-second Video of You Speaking", points: 50, description: "This is the most valuable data point. It contains biometric data (your voice) and visual data (your facial expressions). An AI could use this to clone your voice and face." }
+    ];
+
+    // DOM elements
+    const introSection = document.getElementById('intro-section');
+    const gameSection = document.getElementById('game-section');
+    const resultsSection = document.getElementById('results-section');
+    const dataCardContainer = document.getElementById('data-card-container');
+    const cardNameElement = document.getElementById('card-name');
+    const cardDescriptionElement = document.getElementById('card-description');
+    const cardPointsElement = document.getElementById('card-points');
+    const currentScoreElement = document.getElementById('current-score');
+    const finalScoreElement = document.getElementById('final-score');
+    const soldDataListElement = document.getElementById('sold-data-list');
+    const unsoldDataListElement = document.getElementById('unsold-data-list');
+    const soldPlaceholder = document.getElementById('sold-placeholder');
+    const unsoldPlaceholder = document.getElementById('unsold-placeholder');
+    const exampleContents = document.querySelectorAll('.example-content');
+    const toggleButtons = document.querySelectorAll('.text-sm.font-semibold');
+    const needToKnowFeedback = document.getElementById('need-to-know-feedback');
+    const dataTrailFeedback = document.getElementById('data-trail-feedback');
+    const rephraseSolution = document.getElementById('rephrase-solution');
+    
+    // Correct answers for activities
+    const needToKnowCorrect = ['fact3', 'fact4', 'fact6'];
+    const dataTrailCorrect = ['trail-option-2', 'trail-option-3'];
+
+    // Function to start the game
+    function startGame() {
+        introSection.classList.add('hidden');
+        gameSection.classList.remove('hidden');
+        renderCard();
+    }
+    
+    // Function to reset the game
+    function resetGame() {
+        // Reset state variables
+        totalPoints = 0;
+        soldData = [];
+        unsoldData = [];
+        currentCardIndex = 0;
+        
+        // Reset UI elements
+        currentScoreElement.textContent = '0';
+        soldDataListElement.innerHTML = '';
+        unsoldDataListElement.innerHTML = '';
+        soldPlaceholder.classList.add('hidden');
+        unsoldPlaceholder.classList.add('hidden');
+
+        // Toggle sections
+        resultsSection.classList.add('hidden');
+        introSection.classList.remove('hidden');
+    }
+
+    // Function to render the current data card
+    function renderCard() {
+        if (currentCardIndex < dataCards.length) {
+            const card = dataCards[currentCardIndex];
+            dataCardContainer.classList.remove('active');
+            
+            setTimeout(() => {
+                cardNameElement.textContent = card.name;
+                cardPointsElement.textContent = `${card.points} Points`;
+                dataCardContainer.classList.add('active');
+            }, 300); // Small delay for animation
+        } else {
+            // End of the game
+            showResults();
+        }
+    }
+
+    // Function to handle selling a data point
+    function sellData() {
+        const card = dataCards[currentCardIndex];
+        totalPoints += card.points;
+        soldData.push(card);
+        currentScoreElement.textContent = totalPoints;
+        currentCardIndex++;
+        renderCard();
+    }
+
+    // Function to handle not selling a data point
+    function dontSellData() {
+        const card = dataCards[currentCardIndex];
+        unsoldData.push(card);
+        currentCardIndex++;
+        renderCard();
+    }
+
+    // Function to display the final results
+    function showResults() {
+        gameSection.classList.add('hidden');
+        resultsSection.classList.remove('hidden');
+        
+        finalScoreElement.textContent = totalPoints;
+        
+        // Render sold data
+        if (soldData.length === 0) {
+            soldPlaceholder.classList.remove('hidden');
+        } else {
+            soldDataListElement.innerHTML = '';
+            soldData.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = 'p-3 bg-white rounded-lg shadow-sm flex flex-col items-start';
+                li.innerHTML = `
+                    <div class="flex justify-between items-center w-full">
+                        <span class="font-medium text-gray-800">${item.name}</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-600 font-bold">${item.points} pts</span>
+                            <button onclick="toggleCardDescription(${index}, 'sold')" class="text-xs font-semibold text-gray-500 hover:text-gray-700 transition-colors duration-200">Why?</button>
+                        </div>
+                    </div>
+                    <div id="sold-desc-${index}" class="card-description-content mt-2 text-gray-600 italic pl-4">
+                        <p>${item.description}</p>
+                    </div>
+                `;
+                soldDataListElement.appendChild(li);
+            });
+        }
+        
+        // Render unsold data
+        if (unsoldData.length === 0) {
+            unsoldPlaceholder.classList.remove('hidden');
+        } else {
+            unsoldDataListElement.innerHTML = '';
+            unsoldData.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = 'p-3 bg-white rounded-lg shadow-sm flex flex-col items-start';
+                li.innerHTML = `
+                    <div class="flex justify-between items-center w-full">
+                        <span class="font-medium text-gray-800">${item.name}</span>
+                        <div class="flex items-center space-x-2">
+                             <span class="text-red-600 font-bold">0 pts</span>
+                             <span class="text-gray-500 font-medium text-sm">(Original: ${item.points} pts)</span>
+                             <button onclick="toggleCardDescription(${index}, 'unsold')" class="text-xs font-semibold text-gray-500 hover:text-gray-700 transition-colors duration-200">Why?</button>
+                        </div>
+                    </div>
+                    <div id="unsold-desc-${index}" class="card-description-content mt-2 text-gray-600 italic pl-4">
+                        <p>${item.description}</p>
+                    </div>
+                `;
+                unsoldDataListElement.appendChild(li);
+            });
+        }
+    }
+
+    // Function to toggle the example's visibility
+    function toggleExample(index) {
+        const example = exampleContents[index];
+        const button = toggleButtons[index];
+        example.classList.toggle('open');
+        if (example.classList.contains('open')) {
+            button.textContent = "Hide";
+        } else {
+            button.textContent = "Show Activity";
+        }
+    }
+    
+    // Function to toggle the rephrasing prompt solution
+    function toggleRephrasingSolution() {
+        rephraseSolution.classList.toggle('hidden');
+    }
+
+    // Function to toggle the card description's visibility
+    function toggleCardDescription(index, type) {
+        const descElement = document.getElementById(`${type}-desc-${index}`);
+        descElement.classList.toggle('open');
+    }
+
+    // Function to check the answers for the "Need-to-Know" activity
+    function checkNeedToKnow() {
+        const selectedFacts = [];
+        const allFacts = ['fact1', 'fact2', 'fact3', 'fact4', 'fact5', 'fact6'];
+        allFacts.forEach(id => {
+            if (document.getElementById(id).checked) {
+                selectedFacts.push(id);
+            }
+        });
+        
+        const correctSelections = needToKnowCorrect.every(id => selectedFacts.includes(id));
+        const noIncorrectSelections = selectedFacts.every(id => needToKnowCorrect.includes(id));
+
+        const feedbackDiv = document.getElementById('need-to-know-feedback');
+        feedbackDiv.classList.remove('hidden', 'bg-red-200', 'text-red-800', 'bg-green-200', 'text-green-800');
+
+        if (correctSelections && noIncorrectSelections) {
+            feedbackDiv.classList.add('bg-green-200', 'text-green-800');
+            feedbackDiv.innerHTML = `
+                <p class="font-bold">Correct!</p>
+                <p class="mt-2">You chose only the facts that were necessary for the AI to answer the prompt. This is a great example of the 'Need-to-Know' principle.</p>
+            `;
+        } else {
+            feedbackDiv.classList.add('bg-red-200', 'text-red-800');
+            const missing = needToKnowCorrect.filter(id => !selectedFacts.includes(id)).map(id => document.getElementById(id).nextElementSibling.textContent);
+            const extra = selectedFacts.filter(id => !needToKnowCorrect.includes(id)).map(id => document.getElementById(id).nextElementSibling.textContent);
+            
+            let feedbackText = '<p class="font-bold">Not quite.</p>';
+            if (missing.length > 0) {
+                feedbackText += `<p class="mt-2">You missed some necessary facts: <strong>${missing.join(', ')}</strong>.</p>`;
+            }
+            if (extra.length > 0) {
+                feedbackText += `<p class="mt-2">You included some unnecessary facts: <strong>${extra.join(', ')}</strong>. Sharing these details can increase your data footprint without providing value.</p>`;
+            }
+            feedbackDiv.innerHTML = feedbackText;
+        }
+    }
+
+    // Function to check the answers for the "Data Trail" activity
+    function checkDataTrail() {
+        const selectedFacts = [];
+        const allFacts = ['trail-option-1', 'trail-option-2', 'trail-option-3', 'trail-option-4'];
+        allFacts.forEach(id => {
+            if (document.getElementById(id).checked) {
+                selectedFacts.push(id);
+            }
+        });
+
+        const correctSelections = dataTrailCorrect.every(id => selectedFacts.includes(id));
+        const noIncorrectSelections = selectedFacts.every(id => dataTrailCorrect.includes(id));
+
+        const feedbackDiv = document.getElementById('data-trail-feedback');
+        feedbackDiv.classList.remove('hidden', 'bg-red-200', 'text-red-800', 'bg-green-200', 'text-green-800');
+
+        if (correctSelections && noIncorrectSelections) {
+            feedbackDiv.classList.add('bg-green-200', 'text-green-800');
+            feedbackDiv.innerHTML = `
+                <p class="font-bold">Correct!</p>
+                <p class="mt-2">The prompt and the resulting image are the key data points for a text-to-image AI.</p>
+            `;
+        } else {
+            feedbackDiv.classList.add('bg-red-200', 'text-red-800');
+            const missing = dataTrailCorrect.filter(id => !selectedFacts.includes(id)).map(id => document.getElementById(id).nextElementSibling.textContent);
+            const extra = selectedFacts.filter(id => !dataTrailCorrect.includes(id)).map(id => document.getElementById(id).nextElementSibling.textContent);
+            
+            let feedbackText = '<p class="font-bold">Not quite.</p>';
+            if (missing.length > 0) {
+                feedbackText += `<p class="mt-2">You missed some necessary facts: <strong>${missing.join(', ')}</strong>.</p>`;
+            }
+            if (extra.length > 0) {
+                feedbackText += `<p class="mt-2">You included some unnecessary facts: <strong>${extra.join(', ')}</strong>. </p>`;
+            }
+            feedbackDiv.innerHTML = feedbackText;
+        }
+    }
+
+</script>
+
+</body>
+</html>
