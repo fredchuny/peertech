@@ -5,51 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PeerTech Interactive Learning Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chosen Palette: Calm Harmony (Stone, Sky) -->
-    <!-- Application Structure Plan: A single-page application with a fixed sidebar for navigation and a dynamic main content area. This structure transforms the linear slide presentation into an interactive tool. The support worker can follow the logical flow for new learners or use the sidebar for quick, random-access to specific topics to answer client questions on the spot. This balances guided learning with responsive support. New sections for Microsoft Word, Excel, and Canva have been added under a 'Productivity Apps' category. Each content section now includes a dedicated 'Practice & Q&A' block with collapsible questions and answers to enhance interactivity and self-assessment. -->
-    <!-- Visualization & Content Choices: The source material is purely informational text. Goal: Inform/Teach, and now also Practice/Assess. Presentation: Content is organized into 'cards' for each topic. Interactive lists with expand/collapse functionality manage information density. New 'Practice & Q&A' blocks use nested collapsible sections for questions and their hidden answers, allowing progressive disclosure. Interaction: The primary interaction is the sidebar navigation, which updates the main content view via JavaScript. Secondary interactions include toggling collapsible content for detailed information and revealing answers to Q&A. Method: HTML/CSS with Tailwind for structure and styling. Unicode characters are used for simple, lightweight icons. Justification: This approach avoids overwhelming the user with a long scroll, makes content easily discoverable, provides a clean, focused learning environment, and now actively engages the user in skill reinforcement. NO SVG/Mermaid used. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .nav-link.active {
-            background-color: #e0f2fe;
-            color: #0c4a6e;
-            font-weight: 600;
-        }
-        .content-section {
-            display: none;
-        }
-        .content-section.active {
-            display: block;
-        }
-        .collapsible-header {
-            cursor: pointer;
-        }
-        .collapsible-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-        .collapsible-content.open {
-            max-height: 500px;
-            transition: max-height 0.5s ease-in;
-        }
-        .collapsible-header .arrow {
-            transition: transform 0.3s ease;
-        }
-        .collapsible-header.open .arrow {
-            transform: rotate(90deg);
-        }
+        body { font-family: 'Inter', sans-serif; }
+        .nav-link.active { background-color: #e0f2fe; color: #0c4a6e; font-weight: 600; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .collapsible-content.open { max-height: 2000px; transition: max-height 0.5s ease-in; }
+        .collapsible-header .arrow { transition: transform 0.3s ease; }
+        .collapsible-header.open .arrow { transform: rotate(90deg); }
     </style>
 </head>
+
 <body class="bg-stone-50 text-stone-800">
 
-    <div class="flex h-screen">
-        <aside id="sidebar" class="w-64 bg-stone-100 p-4 border-r border-stone-200 overflow-y-auto transition-transform -translate-x-full md:translate-x-0 md:relative absolute h-full z-20">
-            <h1 class="text-xl font-bold text-stone-900 mb-4">Learning Hub</h1>
+
+<div class="fixed top-0 left-0 w-full bg-sky-800 text-white p-4 z-[60] flex justify-between items-center shadow-md">
+    <h1 class="text-lg md:text-xl font-bold leading-tight">PeerTech Interactive Learning Hub</h1>
+    <a href="https://calendar.app.google/jKJya3FuPFKJR6hm9" target="_blank" class="bg-white text-sky-800 px-3 py-2 rounded-lg text-sm font-semibold hover:bg-sky-50 transition-colors whitespace-nowrap ml-4">
+        Book Appointment
+    </a>
+</div>
+
+<div class="flex h-screen mt-20 overflow-hidden" style="height: calc(100vh - 5rem);">
+    
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>
+
+    <aside id="sidebar" class="fixed top-16 bottom-0 left-0 w-64 bg-stone-100 p-4 border-r border-stone-200 overflow-y-auto transition-transform -translate-x-full md:translate-x-0 md:relative md:top-0 z-50">
+        <h1 class="text-xl font-bold text-stone-900 mb-4">Menu</h1>
             <nav id="navigation">
                 <ul>
                     <li><button data-target="slide-1" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors active">Welcome!!</button></li>
@@ -60,6 +45,7 @@
                             <li><button data-target="slide-3" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Understanding Your Device</button></li>
                             <li><button data-target="slide-4" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Navigation & Settings</button></li>
                             <li><button data-target="slide-5" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Accessibility Features</button></li>
+                            <li><button data-target="slide-21" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Apps</button></li>
                         </ul>
                     </li>
                      <li class="mt-4 pt-4 border-t border-stone-200">
@@ -67,20 +53,25 @@
                         <ul>
                             <li><button data-target="slide-6" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Phone Calls & Texting</button></li>
                             <li><button data-target="slide-7" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Email Essentials</button></li>
+                            <li><button data-target="slide-22" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">WhatsApp & Messaging</button></li>
+                             <li><button data-target="slide-23" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Online Meetings (Zoom/Teams)</button></li>
                         </ul>
                     </li>
                      <li class="mt-4 pt-4 border-t border-stone-200">
-                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">3. Internet</h2>
+                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">3. Internet & Typing</h2>
                         <ul>
                             <li><button data-target="slide-8" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Internet Basics</button></li>
                             <li><button data-target="slide-9" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Browsing & Downloads</button></li>
+                            <li><button data-target="slide-24" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Typing Skills & Practice</button></li>
                         </ul>
                     </li>
                     <li class="mt-4 pt-4 border-t border-stone-200">
-                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">4. Management</h2>
+                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">4. Management & Tools</h2>
                         <ul>
                             <li><button data-target="slide-10" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Files & Cloud Storage</button></li>
                             <li><button data-target="slide-11" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Navigating Online Forms</button></li>
+                            <li><button data-target="slide-25" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Google Map & Transit</button></li>
+                            <li><button data-target="slide-26" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Presto App & Services</button></li>
                         </ul>
                     </li>
                      <li class="mt-4 pt-4 border-t border-stone-200">
@@ -93,16 +84,18 @@
                     <li class="mt-4 pt-4 border-t border-stone-200">
                         <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">6. Productivity Apps</h2>
                         <ul>
-                            <li><button data-target="slide-18" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Microsoft Word</button></li>
-                            <li><button data-target="slide-19" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Microsoft Excel</button></li>
+                            <li><button data-target="slide-18" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Microsoft Word / Google Doc</button></li>
+                            <li><button data-target="slide-19" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Excel / Google Sheets</button></li>
+                            <li><button data-target="slide-27" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Powerpoint / Google Slides</button></li>
                             <li><button data-target="slide-20" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Canva</button></li>
                         </ul>
                     </li>
                      <li class="mt-4 pt-4 border-t border-stone-200">
-                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">7. Resources</h2>
+                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">7. Artificial Intelligence</h2>
                         <ul>
-                            <li><button data-target="slide-14" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Online Learning</button></li>
-                            <li><button data-target="slide-15" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Local Support</button></li>
+                            <li><button data-target="slide-28" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">AI - General Concepts</button></li>
+                            <li><button data-target="slide-29" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">AI - Practical Uses</button></li>
+                            <li><button data-target="slide-30" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">AI - Advanced Learning</button></li>
                         </ul>
                     </li>
                     <li class="mt-4 pt-4 border-t border-stone-200">
@@ -112,6 +105,15 @@
                             <li><button data-target="slide-17" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Next Steps</button></li>
                         </ul>
                     </li>
+
+                    <li class="mt-4 pt-4 border-t border-stone-200">
+                        <h2 class="px-2 text-sm font-semibold text-stone-500 uppercase tracking-wider">FAQ, Activities</h2>
+                         <ul>
+                            <li><button data-target="slide-31" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Managing a Mailbox with Too Many Emails</button></li>
+                            <li><button data-target="slide-32" class="nav-link w-full text-left p-2 rounded-lg hover:bg-stone-200 transition-colors">Microsoft PowerPoint for Beginners : Creating a Service Introduction</button></li>
+                        </ul>
+                    </li>
+
                 </ul>
             </nav>
         </aside>
@@ -123,6 +125,7 @@
                  </button>
                  <h2 id="mobile-header" class="text-lg font-semibold">Welcome</h2>
             </header>
+
             <main class="flex-1 overflow-y-auto p-6 md:p-10">
                 <div id="content-container">
                     <section id="slide-1" class="content-section active">
@@ -136,33 +139,19 @@
                                 <li>To help you achieve your personal and practical goals through tech.</li>
                             </ul>
                             <p class="mt-6 text-md font-medium text-sky-700 bg-sky-50 p-4 rounded-lg">Your PeerTech Support Worker is here to help you explore and learn at your own pace.</p>
+                            <br>
                             <h3 class="text-xl font-semibold mb-3">Quick Links:</h3>
                             <ul class="list-disc list-inside space-y-2 text-stone-700">
                                 <li><a href="https://fredchuny.github.io/peertech/data_dealer.html" target="_blank">AI Game about Personal Privacy: The Data Dealer</a></li>
                                 <li><a href="https://fredchuny.github.io/peertech/ai_for_everyday_life.html" target="_blank">AI for everyday life</a></li>
                                 <li><a href="https://fredchuny.github.io/peertech/spreadsheet-guide.html" target="_blank">Mastering Spreadsheets: Your Easy & Fun Guide!</a></li>
-                            </ul>                            
+                                <li><a href="https://calendar.app.google/jKJya3FuPFKJR6hm9">PeerTech Appointment Booking Page</a></li>
+                            </ul>
+                            <p class="mt-6 text-md font-medium text-sky-700 bg-sky-50 p-4 rounded-lg">💡 What are you hoping to learn or improve with technology?</p>
                         </div>
 
-                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
-                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
-                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
-                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                            </div>
-                            <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's start with a quick check-in:</p>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 1: What are you hoping to learn or improve with technology?</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: This is an open-ended question to help your PeerTech Support Worker understand your specific needs and goals.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </section>
+
                     <section id="slide-2" class="content-section">
                         <h2 class="text-3xl font-bold mb-4 text-sky-800">Why Tech Skills Matter</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -186,36 +175,11 @@
                                 <h3 class="text-lg font-semibold mb-2">🚀 Personal Empowerment</h3>
                                 <p>Build confidence, independence, and create new opportunities.</p>
                             </div>
-                        </div>
-
-                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
-                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
-                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
-                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                            </div>
-                            <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Consider these scenarios:</p>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 1: How can using a smartphone help you find information about a local food bank?</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: You could use a search engine (like Google) on your smartphone to look up "food banks near me" or "local community services."</p>
-                                    </div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Think of one way technology could help you with a daily task or goal.</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Consider communication, finding information, or managing personal details.</p>
-                                    </div>
-                                </div>
-                            </div>
+                        
                         </div>
                     </section>
+
+
                     <section id="slide-3" class="content-section">
                         <h2 class="text-3xl font-bold mb-4 text-sky-800">Understanding Your Device</h2>
                         <div class="space-y-4">
@@ -227,11 +191,13 @@
                                 <div class="collapsible-content">
                                     <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
                                         <li>Locate the power button (usually on the side or top).</li>
+                                        <li>Turning on and off</li>
                                         <li>Understand battery indicators and charging symbols.</li>
                                         <li>Tips for extending battery life (e.g., lower brightness, close unused apps).</li>
                                     </ul>
                                 </div>
                             </div>
+
                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
                                 <div class="collapsible-header flex justify-between items-center p-2">
                                     <h3 class="text-lg font-semibold">🎛️ Buttons & Icons</h3>
@@ -277,7 +243,7 @@
                                 </div>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: What does the Wi-Fi icon look like on your phone?</h4>
+                                        <h4 class="text-lg font-medium">Question: What does the Wi-Fi icon look like on your phone?</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
@@ -292,12 +258,14 @@
                          <div class="space-y-4">
                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
                                 <div class="collapsible-header flex justify-between items-center p-2">
-                                    <h3 class="text-lg font-semibold">📱 Home Screen</h3>
+                                    <h3 class="text-lg font-semibold">📱 Home Screen & Apps</h3>
                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                 </div>
                                 <div class="collapsible-content">
                                     <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Lock screen. Add password/passcode for security?</li>
                                         <li>Finding and opening apps from the main screen.</li>
+                                        <li>Apps (games?whatsapp?bank?) : install, locate/move, folders, update, delete</li>
                                         <li>Organizing apps into folders or pages.</li>
                                         <li>Switching between currently open applications.</li>
                                     </ul>
@@ -338,11 +306,11 @@
                                 </div>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: Why is it important to keep your phone's software updated?</h4>
+                                        <h4 class="text-lg font-medium">Question: Why is it important to set a password on your lock screen?</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Updates often include important security fixes and new features, keeping your phone safe and running smoothly.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: It protects your personal information (photos, banking apps, emails) if your phone is lost or stolen.</p>
                                     </div>
                                 </div>
                             </div>
@@ -350,51 +318,69 @@
                     </section>
                     <section id="slide-5" class="content-section">
                         <h2 class="text-3xl font-bold mb-4 text-sky-800">Accessibility Features</h2>
-                        <p class="text-lg mb-6">Making your device easier to use for everyone.</p>
-                        <div class="space-y-4">
-                           <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">🗣️ Text-to-Speech/Screen Readers</h3>
-                                <p>Your device can read text on the screen aloud.</p>
+                         <p class="mb-4 text-lg">Tools to make your device easier to see, hear, and use.</p>
+                         <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">👁️ Vision Aids</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li><b>Screen Magnification (Zoom):</b> Magnify the screen to see details better.</li>
+                                        <li><b>Font Size & Contrast:</b> Make text larger and colors easier to read.</li>
+                                        <li><b>Screen Readers (TalkBack/VoiceOver):</b> Read aloud the elements on the screen.</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">🔍 Magnification</h3>
-                                <p>Zoom in on screen content to see it more clearly.</p>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">👂 Hearing Aids</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li><b>Closed Captions:</b> Display text for spoken audio in videos or calls.</li>
+                                        <li><b>Live Transcribe/Real-Time Text (RTT):</b> Convert speech to text instantly.</li>
+                                        <li><b>Hearing Aid Compatibility:</b> Connect compatible hearing aids directly.</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">🎨 Display Settings</h3>
-                                <p>Use high contrast mode, larger text, or color correction.</p>
-                            </div>
-                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">🖐️ Customization</h3>
-                                <p>Adjust touch sensitivity, keyboard size, and more.</p>
-                            </div>
-                            <p class="mt-6 text-md font-medium text-sky-700 bg-sky-50 p-4 rounded-lg">Ask your PeerTech Support Worker to show you features that can help!</p>
                         </div>
-
                         <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
                             <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
                                 <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Explore how to make your device more comfortable:</p>
+                                <p class="mb-4 text-sky-700 p-2">Let's explore comfort settings:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: In your device's Settings, find how to make the text size larger.</h4>
+                                        <h4 class="text-lg font-medium">Exercise: Go to Settings → Accessibility. Find and try adjusting the "Display Size" or "Text Size."</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Look for "Display" or "Accessibility" settings.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Making text larger can greatly reduce eye strain when reading messages or emails.</p>
                                     </div>
                                 </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: What is one benefit of using a screen reader?</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: It can help people with visual impairments access information on the screen by reading it aloud.</p>
-                                    </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-21" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">App Management</h2>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📲 App Management</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Install an app (e.g., games, WhatsApp, bank app)</li>
+                                        <li>Locate/move apps on your home screen</li>
+                                        <li>Organizing apps into folders</li>
+                                        <li>Update and delete apps</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -402,41 +388,41 @@
                     <section id="slide-6" class="content-section">
                         <h2 class="text-3xl font-bold mb-4 text-sky-800">Phone Calls & Texting</h2>
                         <div class="space-y-4">
-                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
                                 <div class="collapsible-header flex justify-between items-center p-2">
-                                    <h3 class="text-lg font-semibold">📞 Making & Receiving Calls</h3>
-                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    <h3 class="text-lg font-semibold">📞 Making & Answering Calls</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                 </div>
                                 <div class="collapsible-content">
                                     <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
-                                        <li>Using the phone app to dial a number.</li>
-                                        <li>Answering and ending incoming calls.</li>
-                                        <li>Using the speakerphone option.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
-                                <div class="collapsible-header flex justify-between items-center p-2">
-                                    <h3 class="text-lg font-semibold">📖 Managing Contacts</h3>
-                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                </div>
-                                <div class="collapsible-content">
-                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
-                                        <li>Adding new contacts to your phonebook.</li>
-                                        <li>Finding and editing existing contact information.</li>
+                                        <li>Finding the Phone app and dial pad.</li>
+                                        <li>Adding and managing Contacts.</li>
+                                        <li>Using the "long press 1" shortcut for Voicemail.</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
                                 <div class="collapsible-header flex justify-between items-center p-2">
-                                    <h3 class="text-lg font-semibold">💬 Text Messaging (SMS/MMS)</h3>
-                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    <h3 class="text-lg font-semibold">💬 Sending & Receiving SMS</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                 </div>
                                 <div class="collapsible-content">
                                     <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
-                                        <li>Sending and receiving text messages.</li>
-                                        <li>Sending photos or videos in a message.</li>
-                                        <li>Understanding and participating in group chats.</li>
+                                        <li>Locating the Messages app.</li>
+                                        <li>Starting a new conversation.</li>
+                                        <li>Understanding text bubbles (e.g., blue vs. green).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🚫 Caller ID & Privacy</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Hiding your phone number using the #31# prefix (e.g., #31# 416-123-4567).</li>
+                                        <li>How to change this setting in Apple (Settings → Phone → Show My Caller ID) and Android (Call settings → Supplementary service → Show Caller ID).</li>
                                     </ul>
                                 </div>
                             </div>
@@ -448,23 +434,25 @@
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's try some communication tasks:</p>
+                                <p class="mb-4 text-sky-700 p-2">Practice making a contact and a call:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Add a new contact to your phone (e.g., your PeerTech Support Worker's number).</h4>
+                                        <h4 class="text-lg font-medium">Exercise: Add your 260 Augusta Ave Reception number to your contacts.</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Look for a "Contacts" app or a plus (+) sign in your phone app.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Open the Phone or Contacts app and look for a "+" or "Add New Contact" button. 260 Augusta Ave Reception number is : 416-925-2103 ext.3000</p>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="collapsible-content">
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: What is the main difference between a regular phone call and a text message?</h4>
+                                        <h4 class="text-lg font-medium">Question 1: How do you check your voicemail on most mobile phones?</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: A phone call is live voice communication, while a text message is written communication that can be sent and read at any time.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Usually by long-pressing the '1' key on the dial pad.</p>
                                     </div>
                                 </div>
                             </div>
@@ -472,42 +460,43 @@
                     </section>
                     <section id="slide-7" class="content-section">
                         <h2 class="text-3xl font-bold mb-4 text-sky-800">Email Essentials</h2>
-                         <div class="space-y-4">
+                        <div class="space-y-4">
                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
                                 <div class="collapsible-header flex justify-between items-center p-2">
-                                    <h3 class="text-lg font-semibold">✉️ Setting Up & Using Email</h3>
-                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    <h3 class="text-lg font-semibold">✉️ Setting Up</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                 </div>
                                 <div class="collapsible-content">
                                     <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
-                                        <li>Choosing a provider (Gmail, Outlook) and creating an account.</li>
-                                        <li>Understanding your inbox, sent items, and folders.</li>
-                                        <li>Composing, replying to, and forwarding emails.</li>
-                                        <li>Understanding "To", "Cc", and "Bcc" fields.</li>
+                                        <li>Choose an email server (Gmail / Microsoft Outlook).</li>
+                                        <li>Open an account (creating an email address and password).</li>
+                                        <li>Understanding the Inbox, Sent, and Draft folders.</li>
                                     </ul>
                                 </div>
                             </div>
-                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">✍️ Sending & Receiving</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Compose an email (To, Subject, Body).</li>
+                                        <li>Receive an email (checking your inbox).</li>
+                                        <li>Replying vs. Replying All vs. Forwarding.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
                                 <div class="collapsible-header flex justify-between items-center p-2">
                                     <h3 class="text-lg font-semibold">📎 Attachments</h3>
-                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                 </div>
                                 <div class="collapsible-content">
                                     <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
-                                        <li>How to open attachments you receive.</li>
-                                        <li>How to attach files like documents or photos to an email you're sending.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
-                                <div class="collapsible-header flex justify-between items-center p-2">
-                                    <h3 class="text-lg font-semibold">🎣 Spam & Phishing Awareness</h3>
-                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                </div>
-                                <div class="collapsible-content">
-                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
-                                        <li>Learning to spot suspicious or "phishing" emails.</li>
-                                        <li>Never click on strange links or download unexpected files.</li>
+                                        <li>Open and save an attachment.</li>
+                                        <li>Adding an attachment to an outgoing email.</li>
+                                        <li>Identifying common attachment types (PDF, JPEG, DOCX).</li>
                                     </ul>
                                 </div>
                             </div>
@@ -519,23 +508,113 @@
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's work on email skills:</p>
+                                <p class="mb-4 text-sky-700 p-2">Let's practice composing an email:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Compose a new email and send it to your PeerTech Support Worker (or a practice email address).</h4>
+                                        <h4 class="text-lg font-medium">Exercise: Write a draft email to a friend about a recent good event, but DO NOT send it.</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Look for a "Compose" or "New Message" button, often represented by a plus (+) sign or a pen icon.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Checklist: Did you add a Subject? Did you use the correct recipient (To) address?</p>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-22" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">WhatsApp & Messaging</h2>
+                        <p class="text-lg mb-4">A popular application for free, secure, and instant communication.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">💬 Basic Messaging</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Send, receive message</li>
+                                        <li>Open a group chat</li>
+                                        <li>Forwarding a message (sharing something from one chat to another)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📸 Media & Features</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Attach a photo / document</li>
+                                        <li>Stickers (adding fun images to a message)</li>
+                                        <li>Voice message (recording a short message with your voice)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: What is the purpose of the "Cc" field in an email?</h4>
+                                        <h4 class="text-lg font-medium">Exercise: Send a Sticker or a Voice Message to a practice contact.</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: "Cc" stands for Carbon Copy. It's used to send a copy of the email to someone who needs to be informed but isn't the primary recipient.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Look for the microphone icon to record a voice message, or the face icon for stickers.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-23" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Online Meetings (Zoom / Teams)</h2>
+                        <p class="text-lg mb-4">How to connect with others using video conferencing software.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🔗 Attending a Meeting</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Attend a meeting (using a link or meeting ID).</li>
+                                        <li>Understanding the meeting lobby (waiting for the host).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🎤 In-Meeting Tools</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Camera, audio ON/OFF (Muting is important for background noise).</li>
+                                        <li>Chat (sending text messages to other attendees).</li>
+                                        <li>Reactions / Raise up hands (non-verbal communication).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 1: What should you do if someone hear a lot of background noise on your side during a meeting?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Tap the microphone icon to <b>mute</b> your audio until you are ready to speak.</p>
                                     </div>
                                 </div>
                             </div>
@@ -543,48 +622,47 @@
                     </section>
                     <section id="slide-8" class="content-section">
                         <h2 class="text-3xl font-bold mb-4 text-sky-800">Internet Basics</h2>
-                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">🌐 What is the Internet?</h3>
-                                <p>A global network for information and communication.</p>
+                         <p class="mb-4 text-lg">Understanding what the internet is and how to connect safely.</p>
+                         <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🌐 What is the Internet?</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>A global network connecting computers.</li>
+                                        <li>How we get information, communicate, and use services.</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">📶 Wi-Fi vs. Mobile Data</h3>
-                                <p>Wi-Fi is often free at places like libraries. Mobile data uses your phone plan.</p>
-                            </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">🧭 Web Browsers</h3>
-                                <p>Apps used to access the internet, like Chrome, Safari, or Firefox.</p>
-                            </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">🔍 Search Engines</h3>
-                                <p>Tools inside a browser to find information, like Google or Bing.</p>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📶 Connecting to Wi-Fi</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Finding available networks in your Settings.</li>
+                                        <li>Entering a password to connect securely.</li>
+                                        <li>Understanding the difference between Wi-Fi and Cellular Data.</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-
                         <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
                             <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
                                 <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's test your internet knowledge:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Open a web browser on your device.</h4>
+                                        <h4 class="text-lg font-medium">Question 1: What is the main benefit of connecting to Wi-Fi instead of using Cellular Data?</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Look for icons like a colorful circle (Chrome), a compass (Safari), or a fox (Firefox).</p>
-                                    </div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: What is the main difference between Wi-Fi and mobile data?</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Wi-Fi uses a local internet connection (like at a library or home) and is often free. Mobile data uses your phone's cellular network and is part of your phone plan, which typically costs money.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: It often saves you money on your phone bill, especially for activities like streaming videos or updating apps.</p>
                                     </div>
                                 </div>
                             </div>
@@ -592,19 +670,45 @@
                     </section>
                     <section id="slide-9" class="content-section">
                         <h2 class="text-3xl font-bold mb-4 text-sky-800">Browsing & Downloads</h2>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                            <h3 class="text-xl font-semibold mb-3">Navigating Websites</h3>
-                            <ul class="list-disc list-inside space-y-2 text-stone-700">
-                                <li>Typing website addresses (URLs) into the address bar.</li>
-                                <li>Using a search engine to find what you're looking for.</li>
-                                <li>Using the back and forward buttons to move between pages.</li>
-                                <li>Understanding tabs to keep multiple websites open at once.</li>
-                            </ul>
-                            <h3 class="text-xl font-semibold mb-3 mt-6">Downloads</h3>
-                             <ul class="list-disc list-inside space-y-2 text-stone-700">
-                                <li>Understanding what happens when you download a file (like a PDF or image).</li>
-                                <li>Knowing where downloaded files are typically saved on your device.</li>
-                            </ul>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🔎 Web Browsing</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Using a browser (Chrome, Safari, Firefox).</li>
+                                        <li>Typing a website address (URL) into the address bar.</li>
+                                        <li>Using a search engine (Google, Bing) to find information.</li>
+                                        <li>Understanding 'Back' and 'Forward' buttons.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">⬇️ Downloading Files</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>What is a download? (Saving something from the internet to your device).</li>
+                                        <li>Where do downloaded files go? (Usually a 'Downloads' folder).</li>
+                                        <li>**Safety Tip:** Only download files from trusted websites.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🖥️ Adding Shortcuts</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Add shortcuts to the Taskbar (Youtube/Gmail/Netflix)</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
@@ -613,23 +717,70 @@
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's practice searching and downloading:</p>
+                                <p class="mb-4 text-sky-700 p-2">Let's practice searching for information:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Use a search engine to find the current weather in Toronto.</h4>
+                                        <h4 class="text-lg font-medium">Exercise: In a web browser, search for the opening hours of a local library.</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Type "weather Toronto" into the search bar.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Type the name of the library and "opening hours" into the search bar.</p>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-24" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Typing Skills & Practice</h2>
+                        <p class="text-lg mb-4">Improve your speed and accuracy with these online tools.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">⌨️ Keyboard Basics</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Use of "Caps lock" (for all capital letters).</li>
+                                        <li>Use of "Shift" (for a single capital letter or symbols).</li>
+                                        <li>Identifying Backspace (&larr;) and Delete (Del) keys.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">👨‍💻 Typing Practice Tools</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li><b>Typing-1 (Typing.com):</b> Shows a keyboard with transparent fingers to guide finger placement.
+                                            (<a href="https://www.typing.com/student/lessons" target="_blank" class="text-sky-600 hover:underline">Link to Typing.com</a>)
+                                        </li>
+                                        <li><b>Typing-2 (Typing Club):</b> Uses a fun, game-like approach to practice typing.
+                                            (<a href="https://www.typingclub.com/" target="_blank" class="text-sky-600 hover:underline">Link to Typing Club</a>)
+                                        </li>
+                                        <li><b>Typing-3 (Monkey Type):</b> Assess your typing speed (WPM) by typing a given paragraph.
+                                            (<a href="https://monkeytype.com/" target="_blank" class="text-sky-600 hover:underline">Link to Monkey Type</a>)
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: What does it mean to "download" a file, and where does it usually go?</h4>
+                                        <h4 class="text-lg font-medium">Question 1: What is the fastest way to get ONE capital letter in the middle of a sentence?</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: To "download" means to copy a file from the internet to your device. It usually goes into a "Downloads" folder or your photo gallery if it's an image.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Press and hold the <b>Shift<.b> key while you type the letter, then release Shift.</p>
                                     </div>
                                 </div>
                             </div>
@@ -638,13 +789,31 @@
                     <section id="slide-10" class="content-section">
                         <h2 class="text-3xl font-bold mb-4 text-sky-800">Files & Cloud Storage</h2>
                         <div class="space-y-4">
-                           <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">📁 Understanding Files & Folders</h3>
-                                <p>Learn where your photos, documents, and downloads are stored. We can practice organizing them by creating folders, moving files, and deleting old items to free up space.</p>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📁 Organizing Files and Layout</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Copy, cut, paste a file.</li>
+                                        <li>Open a folder, drag files into the folder.</li>
+                                        <li>Understanding different file types (Documents, Images, Videos).</li>
+                                    </ul>
+                                </div>
                             </div>
-                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">☁️ Cloud Storage (Basic Concept)</h3>
-                                <p>Services like Google Drive, iCloud, or Dropbox let you store files online. Benefits include accessing your files from any device, having a secure backup, and easily sharing with others.</p>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">☁️ Cloud Storage (e.g., Google Drive, iCloud)</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>What is cloud storage? (Storing files online instead of only on your device).</li>
+                                        <li>Benefits: Access files from any device, backup for safety.</li>
+                                        <li>Google Drive Scan to File (Using your phone's camera to turn paper documents into digital files).</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
 
@@ -654,23 +823,14 @@
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's practice file organization:</p>
+                                <p class="mb-4 text-sky-700 p-2">Practice file organization:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Find your "Downloads" folder on your device. What kind of files do you see there?</h4>
+                                        <h4 class="text-lg font-medium">Exercise: Create a new folder on your desktop or cloud drive named "My Important Docs."</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: On Android, look for a "Files" or "My Files" app. On iPhone, look in the "Files" app.</p>
-                                    </div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: What is one benefit of using cloud storage for your photos?</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Your photos are backed up online, so if your phone is lost or broken, your pictures are still safe.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Right-click in the space you want to create the folder, then select "New" $\rightarrow$ "Folder."</p>
                                     </div>
                                 </div>
                             </div>
@@ -678,391 +838,729 @@
                     </section>
                     <section id="slide-11" class="content-section">
                         <h2 class="text-3xl font-bold mb-4 text-sky-800">Navigating Online Forms</h2>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                            <h3 class="text-xl font-semibold mb-3">Common Tasks</h3>
-                            <ul class="list-disc list-inside space-y-3 text-stone-700">
-                                <li>Clicking into fields to type your information.</li>
-                                <li>Understanding required fields (often marked with an asterisk *).</li>
-                                <li>Using drop-down menus, checkboxes, and radio buttons to make selections.</li>
-                                <li>Uploading a document when requested (e.g., a photo of your ID, a resume). This means selecting a file from your device to attach to the form.</li>
-                                <li>Clicking the "Submit" or "Continue" button to complete the form.</li>
-                                <li>Knowing what to do if you get an error message.</li>
-                                <li>Looking for options to save your progress if it's a long form.</li>
-                            </ul>
+                        <p class="mb-4 text-lg">Tips for successfully completing online applications and questionnaires.</p>
+                         <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📝 Key Form Elements</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>**Required Fields:** Look for the asterisk (*) or text that says "(required)."</li>
+                                        <li>**Dropdown Menus:** Clicking on a box to select an option from a list.</li>
+                                        <li>**Checkboxes & Radio Buttons:** Selecting one or more options.</li>
+                                        <li>**Date Pickers:** Using a calendar tool to choose a date.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">✅ Submitting Safely</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Look for "Submit," "Next," or "Continue" buttons.</li>
+                                        <li>Always check for a confirmation message after submitting.</li>
+                                        <li>Be wary of forms asking for sensitive information on untrustworthy websites.</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-
                         <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
                             <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
                                 <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's practice filling out a simple form:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Imagine you're filling out an online survey. How would you select your favorite color from a list of options using a drop-down menu?</h4>
+                                        <h4 class="text-lg font-medium">Question 1: What is the importance of a field marked with a red asterisk (*)?</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Click on the drop-down box, then click on your chosen color from the list that appears.</p>
-                                    </div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: What does an asterisk (*) next to a field on an online form usually mean?</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: It means the field is required and must be filled out before you can submit the form.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: It means the information is required. You cannot submit the form without filling out that field.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
-                     <section id="slide-12" class="content-section">
-                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Protecting Yourself: Passwords</h2>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                            <h3 class="text-xl font-semibold mb-3">Why Strong Passwords Matter</h3>
-                            <p class="mb-4">They are the first line of defense in protecting your personal information, your email, and your accounts from unauthorized access.</p>
-                            <h3 class="text-xl font-semibold mb-3">How to Create Strong Passwords</h3>
-                            <ul class="list-disc list-inside space-y-2 text-stone-700">
-                                <li>Use a mix of uppercase letters, lowercase letters, numbers, and symbols (like !, @, #).</li>
-                                <li>Make them long (at least 8-12 characters is a good start).</li>
-                                <li>Use unique passwords for each important account (email, banking).</li>
-                                <li>Avoid using personal information that's easy to guess (birthdays, names, pet's names).</li>
-                            </ul>
-                             <p class="mt-6 text-md font-medium text-red-700 bg-red-50 p-4 rounded-lg">Rule #1: Never share your passwords with anyone!</p>
+                    <section id="slide-25" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Google Map / Transit</h2>
+                        <p class="text-lg mb-4">Using online maps and transit apps to plan your journey.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📍 Finding a Location</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Heading to somewhere? (e.g. Edwards Gardens)</li>
+                                        <li>Search for a place, view details (e.g. opening hours, phone numbers) of place.</li>
+                                        <li>Setting a place as Home/Work (e.g., 260 Augusta Ave) for quick directions.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🚌 Planning a Route</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Find the routes available (driving, public transit, walking, cycling).</li>
+                                        <li>Comparing time, cost, and stops for different transit options.</li>
+                                        <li>Using live location/GPS for real-time navigation.</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-
                         <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
                             <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
                                 <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's think about password safety:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 1: Is "password123" a strong password? Why or why not?</h4>
+                                        <h4 class="text-lg font-medium">Exercise: In Google Maps, find the public transit route from your current location to a known landmark.</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: No, it's a very weak password. It's short, uses common words, and a simple number sequence, making it easy to guess.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Tap the "Directions" button and then the "Transit" icon (often a bus or train).</p>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-26" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Presto App & Services</h2>
+                        <p class="text-lg mb-4">Managing your transit and accessing essential government services online.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">💳 Presto App Management</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Install an app and setup an account.</li>
+                                        <li>Top up (add money to your Presto card).</li>
+                                        <li>Adding the Presto card to a digital Wallet (Apple Pay/Google Wallet) for tap-and-go.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">⚙️ Accessing Digital Services</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Access services (logging in to government portals).</li>
+                                        <li>Understanding the TTC Fair Transit Discount Program.</li>
+                                        <li>Finding information on the Canadian Dental Care Plan.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Think of a strong password idea using the tips provided (don't share the actual password!).</h4>
+                                        <h4 class="text-lg font-medium">Question 1: Why is it helpful to have your Presto card in your phone's digital wallet?</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Combine unrelated words, add numbers and symbols, and make it long.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: You don't need the physical card and can quickly tap your phone to pay for transit.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-12" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Passwords</h2>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🔑 Creating Strong Passwords</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Use a mix of upper/lower case letters, numbers, and symbols.</li>
+                                        <li>Aim for at least 12 characters.</li>
+                                        <li>Avoid using personal information (names, birthdays) or common words.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🔒 Keeping Passwords Safe</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Never share your password.</li>
+                                        <li>Use a different password for every important account (email, banking).</li>
+                                        <li>Consider a password manager tool (like Google Password Manager) or writing them down safely at home.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 1: Is "Password123" a strong password? Why or why not?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: No, it is a very common password that hackers' programs can guess quickly.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
                     <section id="slide-13" class="content-section">
-                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Recognizing Scams & Staying Private</h2>
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Recognizing Scams</h2>
+                        <p class="mb-4 text-lg">Protect yourself from online fraud and malicious links.</p>
                         <div class="space-y-4">
-                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
                                 <div class="collapsible-header flex justify-between items-center p-2">
-                                    <h3 class="text-lg font-semibold">🎣 Phishing & Online Scams</h3>
-                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    <h3 class="text-lg font-semibold">📧 Email & Text Scams (Phishing)</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                 </div>
                                 <div class="collapsible-content">
                                     <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
-                                        <li>In emails/texts, look for bad grammar, urgent requests for money, and suspicious links.</li>
-                                        <li>Be wary of unsolicited calls asking for personal information or payment.</li>
-                                        <li>Rule of thumb: If an offer seems too good to be true, it probably is.</li>
-                                        <li>Always verify: If you're unsure about a message, contact the organization directly using their official website or phone number, not the one in the message.</li>
+                                        <li>**Sense of Urgency:** Scammers often rush you ("Act now or your account will be closed!").</li>
+                                        <li>**Unexpected Attachments:** Never open an attachment from an email you don't trust.</li>
+                                        <li>**Grammar/Spelling Errors:** Official communication rarely has typos.</li>
+                                        <li>**Requests for Money/Gift Cards:** Legitimate services will not ask for payment in this way.</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
                                 <div class="collapsible-header flex justify-between items-center p-2">
-                                    <h3 class="text-lg font-semibold">🔒 Privacy Settings & Public Wi-Fi</h3>
-                                     <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    <h3 class="text-lg font-semibold">📞 Phone Scams (Vishing)</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                 </div>
                                 <div class="collapsible-content">
                                     <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
-                                        <li>Understand what information you are sharing on apps and websites. Take a moment to check the privacy settings on social media.</li>
-                                        <li>Avoid sensitive activities like banking or logging into important accounts when using public, unsecured Wi-Fi.</li>
-                                        <li>Remember to install software updates, as they often include important security fixes.</li>
+                                        <li>**Impersonation:** Someone claiming to be from the CRA, a bank, or police.</li>
+                                        <li>**The Threat:** They may threaten arrest or immediate financial penalty.</li>
+                                        <li>**Rule:** Hang up and call the official organization's number (from their website, not the scammer's number).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🔒 Data Privacy Game</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <p class="text-stone-700 p-4 border-t mt-2">Practice recognizing privacy risks by playing the Data Dealer game (5 mins):
+                                        <a href="https://fredchuny.github.io/peertech/data_dealer.html" target="_blank" class="text-sky-600 hover:underline">https://fredchuny.github.io/peertech/data_dealer.html</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 1: Your bank emails you saying your account will be locked in one hour. What should you do?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: **DO NOT** click any link in the email. Close the email and call your bank using the phone number listed on the back of your card or their official website.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-18" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Microsoft Word / Google Doc</h2>
+                        <p class="text-lg mb-4">Creating and formatting documents for letters, resumes, and notes.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📝 Document Creation Basics</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Typing (Entering text into the document).</li>
+                                        <li>Start with a title.</li>
+                                        <li>Press "Enter" to go to the next row (new paragraph).</li>
+                                        <li>Backspace & Delete (correcting mistakes).</li>
+                                        <li>More typing (e.g. self care), with point form.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">✏️ Formatting and Saving</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Formatting (Italic, Bold, Underline) - emphasizing text.</li>
+                                        <li>Font type and size - changing the look and readability.</li>
+                                        <li>Alignment (left, center, right).</li>
+                                        <li>Save (ensure your work is stored).</li>
+                                        <li>Print (creating a physical copy).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📋 Sample Text (Self-Care)</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <div class="bg-stone-50 p-4 mt-2 border-t rounded-lg">
+                                        <h5 class="font-semibold mb-2">Physical self-care</h5>
+                                        <ul class="list-disc list-inside space-y-1 text-sm">
+                                            <li>Healthy eating: Consuming balanced meals to support your body's performance and minimize health risks.</li>
+                                            <li>Physical activity: Engaging in movement like walking, yoga, sports, or gardening for overall well-being.</li>
+                                            <li>Rest: Getting enough sleep is recognized as a crucial pillar of health.</li>
+                                            <li>Hygiene: Maintaining good personal hygiene to prevent the spread of sickness.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Write a three-point list about your favorite hobbies using the bullet-point tool.</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Look for the icon with three dots and lines next to it ($\bullet$).</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-19" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Excel / Google Sheets</h2>
+                        <p class="text-lg mb-4">Using spreadsheets for budgeting, tracking expenses, or organizing lists.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📊 Understanding a Spreadsheet</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>**Cells:** The individual boxes where you enter data.</li>
+                                        <li>**Rows & Columns:** Rows go across (1, 2, 3...), Columns go down (A, B, C...).</li>
+                                        <li>Entering different types of data (text, numbers, currency).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">➕ Basic Functions</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Using the SUM function (e.g., =SUM(A1:A10)) to add numbers.</li>
+                                        <li>Formatting numbers as currency or percentages.</li>
+                                        <li>Creating a simple table (e.g., Date, Item, Cost).</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-
                         <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
                             <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
                                 <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's consider some safety scenarios:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 1: You receive an email from your bank asking you to click a link to "verify your account immediately." What should you do?</h4>
+                                        <h4 class="text-lg font-medium">Question 1: You want to add up your weekly expenses listed in cells B2, B3, and B4. What formula would you use in cell B5?</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Do NOT click the link. Instead, go directly to your bank's official website (by typing the address yourself) or call them using a trusted phone number to check if there's an issue.</p>
-                                    </div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Think about a time you might use public Wi-Fi. What kind of online activity would you AVOID doing there?</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Anything that involves your personal or financial information, like online banking or logging into email.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: `=SUM(B2:B4)` or `=B2+B3+B4`</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
-
-                    <!-- NEW Productivity Apps Section -->
-                    <section id="slide-18" class="content-section">
-                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Microsoft Word Basics</h2>
-                        <p class="text-lg mb-6">Learn to create and edit documents.</p>
+                    <section id="slide-27" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Powerpoint / Google Slides</h2>
+                        <p class="text-lg mb-4">Creating simple visual aids for presentations or educational purposes.</p>
                         <div class="space-y-4">
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">📝 Creating & Saving Documents</h3>
-                                <p>How to open Word, start a new document, and save your work to avoid losing it.</p>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🖼️ Slide Basics</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Creating a new presentation.</li>
+                                        <li>Adding a new slide.</li>
+                                        <li>Using simple templates for a clean look.</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">✍️ Basic Formatting</h3>
-                                <p>Making text bold, italic, or underlined. Changing font size and color.</p>
-                            </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">✂️ Copy, Cut, & Paste</h3>
-                                <p>Moving text around within your document or from another source.</p>
-                            </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">✅ Spell Check</h3>
-                                <p>Using the built-in tool to catch spelling and grammar mistakes.</p>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🎨 Adding Content</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Inserting text boxes and titles.</li>
+                                        <li>Adding images or simple clip art.</li>
+                                        <li>Changing the background color or image.</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-
                         <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
                             <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
                                 <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's practice with Microsoft Word:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Open Microsoft Word and type your name. Then, make your name bold.</h4>
+                                        <h4 class="text-lg font-medium">Exercise: Create a new presentation with a title slide and one content slide about your favorite animal.</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Select your name, then look for a "B" icon (for Bold) in the toolbar.</p>
-                                    </div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: Why is it important to save your document often in Word?</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Saving regularly prevents you from losing your work if the program crashes or the power goes out.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Keep the text simple and use one large picture for a good presentation slide.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
-
-                    <section id="slide-19" class="content-section">
-                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Microsoft Excel Basics</h2>
-                        <p class="text-lg mb-6">Organize and work with numbers in spreadsheets.</p>
-                        <div class="space-y-4">
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">📊 Understanding Worksheets</h3>
-                                <p>What are cells, rows, and columns? How to navigate a spreadsheet.</p>
-                            </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">🔢 Entering Data</h3>
-                                <p>Typing numbers and text into cells.</p>
-                            </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">➕ Simple Sums</h3>
-                                <p>Using a basic formula to add numbers together.</p>
-                            </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">💾 Saving Your Spreadsheet</h3>
-                                <p>How to save your Excel file.</p>
-                            </div>
-                        </div>
-
-                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
-                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
-                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
-                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                            </div>
-                            <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's practice with Microsoft Excel:</p>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Open Excel. Type "Apples" in cell A1 and "5" in cell B1.</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Click on cell A1 (the box where column A and row 1 meet) and type, then press Enter or click on B1.</p>
-                                    </div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: What is the difference between a "row" and a "column" in Excel?</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Rows go horizontally (numbered 1, 2, 3...), and columns go vertically (lettered A, B, C...).</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
                     <section id="slide-20" class="content-section">
-                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Canva Basics</h2>
-                        <p class="text-lg mb-6">Create beautiful designs easily for social media, flyers, and more.</p>
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Canva</h2>
+                        <p class="text-lg mb-4">A simple online design tool for creating flyers, posters, and social media graphics.</p>
                         <div class="space-y-4">
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">🎨 Finding & Using Templates</h3>
-                                <p>How to choose a pre-made design for your project (e.g., social media post, flyer).</p>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🚀 Getting Started</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Open an account (using email or Google/Facebook login).</li>
+                                        <li>Find a template (e.g., about a flyer) to start quickly.</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">✍️ Adding & Editing Text</h3>
-                                <p>How to add headings, subheadings, and body text, and change their size, color, and font.</p>
-                            </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">🖼️ Adding & Arranging Images</h3>
-                                <p>Uploading your own photos or using Canva's free images. Moving and resizing them.</p>
-                            </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">⬇️ Downloading Your Design</h3>
-                                <p>Saving your finished design as an image (PNG, JPG) or PDF.</p>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🎨 Editing & Saving</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Change texts (font type, font size) by clicking on them.</li>
+                                        <li>Add elements (text, photos, graphics) from the left-hand menu.</li>
+                                        <li>Add drawing (using the freehand tool).</li>
+                                        <li>Save as PDF/PNG (choosing the final file type for printing or sharing).</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-
                         <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
                             <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
                                 <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's try some Canva design tasks:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Open Canva and try to find a template for a "Social Media Post."</h4>
+                                        <h4 class="text-lg font-medium">Exercise: Find a "Job Application" or "Event Poster" template in Canva and change the main title.</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Use the search bar on Canva's homepage or look through the categories.</p>
-                                    </div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: What is a benefit of using a template in Canva instead of starting from scratch?</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: Templates provide a professional starting point, saving you time and ensuring a good design even if you're not an artist.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: You can find templates by searching in the top bar after selecting the project type (e.g., Flyer).</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
-                    <!-- END NEW Productivity Apps Section -->
-
-                     <section id="slide-14" class="content-section">
-                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Online Learning Platforms</h2>
+                    <section id="slide-28" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Artificial Intelligence - General Concepts</h2>
+                        <p class="text-lg mb-4">A simple introduction to using AI tools for daily tasks and goal setting.</p>
                         <div class="space-y-4">
-                           <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">GCFLearnFree.org</h3>
-                                <p>Offers free, easy-to-understand tutorials on almost any tech topic, with videos and practice activities.</p>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🧠 Your First AI Prompt</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Pick one platform (ChatGPT / Gemini / Copilot).</li>
+                                        <li>What's on your mind? Type your first prompt (the question or command you give the AI).</li>
+                                        <li>How's the answer? Any follow-up questions?</li>
+                                    </ul>
+                                </div>
                             </div>
-                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">YouTube</h3>
-                                <p>Great for visual learners. You can search for specific "how-to" videos. (Tip: Look for recent videos from reputable sources).</p>
-                            </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">Your Local Library</h3>
-                                <p>Many libraries, including the Toronto Public Library, offer free computer access and may have online courses or in-person tech help.</p>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">💡 Task: I Want to Help People</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>**Goal:** I want to start a small business to help people using my skills. What are 3 ideas that don't need money to start?</li>
+                                        <li>How can we make it more specific? (e.g., adding location, skills, or target audience).</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-
                         <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
                             <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
                                 <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Let's find some learning resources:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Go to GCFLearnFree.org and find a tutorial on "Basic Computer Skills."</h4>
+                                        <h4 class="text-lg font-medium">Exercise: Ask an AI, "What is the best way to save money on groceries this week?"</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Use the search bar on their website.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Good answers should include tips like checking flyers, planning meals, and buying in bulk.</p>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-29" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Artificial Intelligence - Practical Uses</h2>
+                        <p class="text-lg mb-4">Using AI to help with decisions, communication, and learning.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📅 Personal Assistant</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>**Prompt Example:** Help me decide between making pasta or ordering pizza for dinner tonight. List 3 pros and 3 cons for each.</li>
+                                        <li>Using AI for simple, non-critical decision making.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">✍️ Communication & Writing</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>**Prompt Example (Fun):** Write a fun and quirky birthday message for a friend who loves cats and reading.</li>
+                                        <li>**Prompt Example (Formal):** Write a cover letter for a specific job (You must give the AI the job description and your background!).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">💡 Learning & Understanding</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>**Prompt Example:** Explain the concept of 'supply and demand'/'poverty' in simple terms, like you're talking to a curious 10-year-old.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 2: What kind of tech support might your local library offer?</h4>
+                                        <h4 class="text-lg font-medium">Exercise: Use an AI to re-write a difficult paragraph from a piece of mail into simple language.</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: They might have free computer access, Wi-Fi, or even staff who can provide basic tech help or refer you to online courses.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Copy the text and use the prompt: "Simplify this for me: [Paste Text Here]"</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-30" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Artificial Intelligence - Advanced Learning</h2>
+                        <p class="text-lg mb-4">A guided path to understanding advanced AI concepts through video and practice.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📺 Learn AI by Video: Generative AI in a Nutshell</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <p class="text-stone-700 p-4 border-t mt-2">
+                                        **Video:** Generative AI in a Nutshell - how to survive and thrive in the age of AI
+                                        (<a href="https://www.youtube.com/watch?v=2IK3DFHRFfw" target="_blank" class="text-sky-600 hover:underline">Link to YouTube Video</a>)
+                                    </p>
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>**First 10 mins:** theories, but very detailed.</li>
+                                        <li>**13 min Mark:** Prompt Practice: "I work as X, My biggest challenge is Y, how can you help me?"</li>
+                                        <li>**15 min Mark:** Guess why it is not a good prompt. What could a better prompt look like?</li>
+                                        <li>**15:53 Mark:** Learn the structure: task + context + question. Practise!</li>
+                                        <li>**New Task:** Please prepare a presentation for me.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">❓ Reflection & Next Steps</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Other techniques you can think of? (How to improve an AI's answer).</li>
+                                        <li>After video: how can AI be part of your life? What question would you start asking AI?</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Question 1: What are the three parts of a good AI prompt learned from the video?</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: **Task** (what you want it to do) + **Context** (background information) + **Question** (the specific output you need).</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="slide-14" class="content-section">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Online Learning</h2>
+                        <p class="mb-4 text-lg">Finding resources to continue your journey and acquire new skills.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📚 Free Educational Websites</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>**Khan Academy:** Free courses on math, science, and more.</li>
+                                        <li>**GFCGlobal:** Free, easy-to-understand tutorials for technology, reading, and math.</li>
+                                        <li>**YouTube:** A massive resource for visual learning (be mindful of reliability).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">💻 Developing Job Skills</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>**LinkedIn Learning (via Library Card):** Access thousands of high-quality courses for free.</li>
+                                        <li>**Coursera/edX:** Online university-level courses, often free to audit (view only).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
+                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
+                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
+                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
+                                    <div class="collapsible-header flex justify-between items-center p-2">
+                                        <h4 class="text-lg font-medium">Exercise: Go to YouTube and search for a video tutorial on "How to make scrambled eggs."</h4>
+                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: This shows that video platforms can teach practical, everyday skills too!</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
                     <section id="slide-15" class="content-section">
-                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Local Support & Tools</h2>
-                        <div class="space-y-4">
-                           <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">Community Centers & Libraries</h3>
-                                <p>These are great places for free computer access, Wi-Fi, and sometimes tech support sessions.</p>
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Local Support</h2>
+                        <p class="mb-4 text-lg">Where to find face-to-face help and resources in your community.</p>
+                         <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🏛️ Community & Public Services</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>**Public Libraries:** Free computer/Wi-Fi access, and sometimes one-on-one tech help.</li>
+                                        <li>**Community Centers:** Often run digital literacy workshops and drop-in sessions.</li>
+                                        <li>**Local Agencies:** Organizations focused on employment, newcomers, or seniors often have tech programs.</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">Digital Literacy & Job Search Programs</h3>
-                                <p>Ask your PeerTech worker for information on local programs in Toronto that can help with online applications, resumes, and interviews.</p>
-                            </div>
-                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                                <h3 class="text-lg font-semibold mb-2">Low-Cost Internet & Devices</h3>
-                                <p>There are programs available that can help you get access to affordable internet services and devices.</p>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">📞 Crisis & Information Lines</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>**211:** A confidential, non-emergency phone number for information on health and social services.</li>
+                                        <li>Knowing your local non-emergency police number (e.g., 416-808-2222 in Toronto).</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-
                         <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
                             <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
                                 <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
                                 <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                             </div>
                             <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Consider how to find local help:</p>
                                 <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
                                     <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 1: If you needed free Wi-Fi, where is one place in your community you could go?</h4>
+                                        <h4 class="text-lg font-medium">Question 1: You need to know the opening hours of a community kitchen. Which number is best to call?</h4>
                                         <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
                                     </div>
                                     <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: A local public library or community center often provides free Wi-Fi access.</p>
-                                    </div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Ask your PeerTech Support Worker about any local programs that offer low-cost internet or devices.</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: This is a direct action to connect with available resources.</p>
+                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: **211** will connect you to a service provider who can look up local social services and programs for you.</p>
                                     </div>
                                 </div>
                             </div>
@@ -1070,75 +1568,61 @@
                     </section>
                     <section id="slide-16" class="content-section">
                         <h2 class="text-3xl font-bold mb-4 text-sky-800">Your Tech Journey</h2>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                            <h3 class="text-xl font-semibold mb-3">Remember:</h3>
-                            <ul class="list-disc list-inside space-y-2 text-stone-700">
-                                <li>Every small step forward is a success!</li>
-                                <li>It's okay to ask questions and take your time.</li>
-                                <li>Technology is a tool to help you.</li>
-                            </ul>
-                            <h3 class="text-xl font-semibold mb-3 mt-6">Your PeerTech Support Worker is here to:</h3>
-                             <ul class="list-disc list-inside space-y-2 text-stone-700">
-                                <li>Listen to your needs.</li>
-                                <li>Help you set and achieve your tech goals.</li>
-                                <li>Provide patient, supportive guidance.</li>
-                                <li>Connect you with further resources.</li>
-                            </ul>
-                        </div>
-
-                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
-                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
-                                <h3 class="text-xl font-semibold">💡 Practice & Q&A</h3>
-                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">⭐ Reflect on Your Progress</h3>
+                                <ul class="list-disc list-inside space-y-2 text-stone-700">
+                                    <li>What was the hardest thing you learned, and how did you overcome it?</li>
+                                    <li>What is one new thing you feel confident doing on your device?</li>
+                                </ul>
                             </div>
-                            <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">Reflect on your learning:</p>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 1: What is one new thing you learned or practiced today that you feel more confident about?</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: (This is a personal reflection question for the user).</p>
-                                    </div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Exercise: Identify one tech skill you'd like to focus on improving in your next session.</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Hint: Think about what would be most helpful for your daily life or goals.</p>
-                                    </div>
-                                </div>
+                             <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                                <h3 class="text-lg font-semibold mb-2">🧠 Growth Mindset</h3>
+                                <ul class="list-disc list-inside space-y-2 text-stone-700">
+                                    <li>Technology changes constantly—the goal is to learn *how to learn*.</li>
+                                    <li>It’s okay to make mistakes; they are part of the process.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 col-span-1 md:col-span-2">
+                                <h3 class="text-xl font-semibold mb-2 text-sky-800">Keep Practicing!</h3>
+                                <p class="text-sky-700">Daily practice, even for 5 minutes, will reinforce your new skills. Try teaching a small skill to someone else.</p>
                             </div>
                         </div>
                     </section>
                     <section id="slide-17" class="content-section">
-                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Questions & Next Steps</h2>
-                        <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-200 text-center">
-                            <p class="text-xl mb-4">What are you hoping to work on next?</p>
-                            <p class="text-lg text-stone-600 mb-6">Do you have any questions about what we covered today?</p>
-                            <button class="bg-sky-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-sky-700 transition-colors">Let's plan our next session!</button>
-                        </div>
-
-                        <div class="bg-sky-50 p-6 rounded-xl shadow-sm border border-sky-200 mt-8">
-                            <div class="collapsible-header flex justify-between items-center p-2 text-sky-800">
-                                <h3 class="text-xl font-semibold">💡 Session Wrap-up</h3>
-                                <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                            </div>
-                            <div class="collapsible-content">
-                                <p class="mb-4 text-sky-700 p-2">A final thought for your session:</p>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 mb-2">
-                                    <div class="collapsible-header flex justify-between items-center p-2">
-                                        <h4 class="text-lg font-medium">Question 1: How do you feel about using technology after today's session?</h4>
-                                        <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
-                                    </div>
-                                    <div class="collapsible-content">
-                                        <p class="text-stone-700 p-4 border-t mt-2">Answer: (This is a final reflective question to gauge confidence and understanding.)</p>
-                                    </div>
+                        <h2 class="text-3xl font-bold mb-4 text-sky-800">Next Steps</h2>
+                        <p class="text-lg mb-6">How to plan your future digital goals.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🎯 Setting New Goals</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>**Short-Term:** Master one new app (e.g., a banking app, the Presto app).</li>
+                                        <li>**Long-Term:** Create an online resume and apply for one job each month.</li>
+                                        <li>**Safety Goal:** Set up Two-Factor Authentication (2FA) on your most important accounts.</li>
+                                    </ul>
                                 </div>
                             </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
+                                <div class="collapsible-header flex justify-between items-center p-2">
+                                    <h3 class="text-lg font-semibold">🤝 Where to Find More Help</h3>
+                                    <span class="arrow text-sky-600 font-bold text-xl">&#x276F;</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <ul class="list-disc list-inside space-y-2 text-stone-700 p-4 border-t mt-2">
+                                        <li>Your local library's tech help sessions.</li>
+                                        <li>Online tutorial videos (YouTube, GCFGlobal).</li>
+                                        <li>Asking a trusted family member or friend.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8 p-6 text-center bg-sky-100 rounded-xl border border-sky-300">
+                            <h3 class="text-2xl font-bold text-sky-800">You are empowered. You can do this!</h3>
+                            <p class="text-lg mt-2 text-sky-700">Thank you for engaging with PeerTech.</p>
                         </div>
                     </section>
                 </div>
@@ -1146,68 +1630,50 @@
         </div>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const navigationLinks = document.querySelectorAll('.nav-link');
-        const contentSections = document.querySelectorAll('.content-section');
-        const mobileHeader = document.getElementById('mobile-header');
-        const menuToggle = document.getElementById('menu-toggle');
-        const sidebar = document.getElementById('sidebar');
 
-        function switchTab(targetId) {
-            contentSections.forEach(section => {
-                section.classList.remove('active');
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            const overlay = document.getElementById('sidebar-overlay');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const contentContainer = document.getElementById('content-container');
+
+            // 1. Sidebar Control
+            function openSidebar() { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
+            function closeSidebar() { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); }
+
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.contains('-translate-x-full') ? openSidebar() : closeSidebar();
             });
-            const activeSection = document.getElementById(targetId);
-            if (activeSection) {
-                activeSection.classList.add('active');
-            }
+            overlay.addEventListener('click', closeSidebar);
 
-            navigationLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.dataset.target === targetId) {
-                    link.classList.add('active');
-                    if(mobileHeader) {
-                        mobileHeader.textContent = link.textContent;
-                    }
-                }
+            // 2. Navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const id = e.currentTarget.dataset.target;
+                    contentSections.forEach(s => s.classList.toggle('active', s.id === id));
+                    navLinks.forEach(l => l.classList.toggle('active', l.dataset.target === id));
+                    if (window.innerWidth < 768) closeSidebar();
+                });
             });
-        }
 
-        navigationLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                const targetId = this.dataset.target;
-                switchTab(targetId);
-                if (sidebar.classList.contains('md:relative')) {
-                   sidebar.classList.add('-translate-x-full');
-                }
-            });
-        });
+            // 3. FIXED COLLAPSIBLE LOGIC
+            contentContainer.addEventListener('click', (e) => {
+                const header = e.target.closest('.collapsible-header');
+                if (!header) return;
 
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('-translate-x-full');
-            });
-        }
-
-        const collapsibleHeaders = document.querySelectorAll('.collapsible-header');
-        collapsibleHeaders.forEach(header => {
-            header.addEventListener('click', function() {
-                this.classList.toggle('open');
-                const content = this.nextElementSibling;
-                if (content.classList.contains('open')) {
-                    content.classList.remove('open');
-                    content.style.maxHeight = null;
-                } else {
-                    content.classList.add('open');
-                    content.style.maxHeight = content.scrollHeight + "px";
+                const content = header.nextElementSibling;
+                if (content && content.classList.contains('collapsible-content')) {
+                    header.classList.toggle('open');
+                    content.classList.toggle('open');
                 }
             });
         });
+    </script>
 
-        switchTab('slide-1');
-    });
-</script>
+
 
 </body>
 </html>
